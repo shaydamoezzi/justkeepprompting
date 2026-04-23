@@ -1,0 +1,622 @@
+{
+  "question_id": "Prediction_T1_102",
+  "strategy": "context_socratic",
+  "video_path": "/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Prediction/Prediction_T1_102.mp4",
+  "frame_paths": [],
+  "turns": [
+    {
+      "turn_index": 0,
+      "raw_text": "ANSWER: D. Take the sandwich.\nCONFIDENCE: 60\nRATIONALE: The person is standing in front of a counter with food items, and the most logical next action is to take the sandwich.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 60,
+      "sure_status": null,
+      "rationale": "The person is standing in front of a counter with food items, and the most logical next action is to take the sandwich.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 8045,
+        "parse_ms": 0,
+        "turn_total_ms": 8045
+      },
+      "token_usage": {
+        "prompt_tokens": 4425,
+        "completion_tokens": 46,
+        "total_tokens": 4471
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 4425,
+        "completion_tokens": 46,
+        "total_tokens": 4471
+      }
+    },
+    {
+      "turn_index": 1,
+      "raw_text": "NO: I am not sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 40\nRATIONALE: Upon re-evaluation, the visual evidence is too dark and unclear to definitively identify the objects on the counter. While a sandwich is a possibility, the items could also be other food or non-food items. The person's actions are ambiguous, and the context does not strongly support taking a sandwich. Therefore, the confidence in the previous answer is reduced.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 40,
+      "sure_status": "no",
+      "rationale": "Upon re-evaluation, the visual evidence is too dark and unclear to definitively identify the objects on the counter. While a sandwich is a possibility, the items could also be other food or non-food items. The person's actions are ambiguous, and the context does not strongly support taking a sandwich. Therefore, the confidence in the previous answer is reduced.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 15036,
+        "parse_ms": 0,
+        "turn_total_ms": 15036
+      },
+      "token_usage": {
+        "prompt_tokens": 4637,
+        "completion_tokens": 99,
+        "total_tokens": 4736
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 9062,
+        "completion_tokens": 145,
+        "total_tokens": 9207
+      }
+    },
+    {
+      "turn_index": 2,
+      "raw_text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 50\nRATIONALE: After re-evaluating the visual evidence, the scene remains too dark and indistinct to conclusively identify the objects on the counter. However, the person's posture and proximity to the counter suggest an interaction with the items, and taking a sandwich is a plausible action given the context of food items. The uncertainty remains high due to the poor visibility, but the most logical inference based on the available information is that the person will take the sandwich.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 50,
+      "sure_status": "yes",
+      "rationale": "After re-evaluating the visual evidence, the scene remains too dark and indistinct to conclusively identify the objects on the counter. However, the person's posture and proximity to the counter suggest an interaction with the items, and taking a sandwich is a plausible action given the context of food items. The uncertainty remains high due to the poor visibility, but the most logical inference based on the available information is that the person will take the sandwich.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 17420,
+        "parse_ms": 0,
+        "turn_total_ms": 17420
+      },
+      "token_usage": {
+        "prompt_tokens": 4908,
+        "completion_tokens": 117,
+        "total_tokens": 5025
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 13970,
+        "completion_tokens": 262,
+        "total_tokens": 14232
+      }
+    },
+    {
+      "turn_index": 3,
+      "raw_text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 60\nRATIONALE: After re-evaluating the visual evidence, the person is standing in front of a counter with items that appear to be food, and their posture suggests they are about to interact with them. Given the context and the most logical action in such a scenario, taking the sandwich is the most plausible next action. The darkness of the scene limits certainty, but the available cues support this inference.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 60,
+      "sure_status": "yes",
+      "rationale": "After re-evaluating the visual evidence, the person is standing in front of a counter with items that appear to be food, and their posture suggests they are about to interact with them. Given the context and the most logical action in such a scenario, taking the sandwich is the most plausible next action. The darkness of the scene limits certainty, but the available cues support this inference.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 15843,
+        "parse_ms": 0,
+        "turn_total_ms": 15843
+      },
+      "token_usage": {
+        "prompt_tokens": 5197,
+        "completion_tokens": 104,
+        "total_tokens": 5301
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 19167,
+        "completion_tokens": 366,
+        "total_tokens": 19533
+      }
+    },
+    {
+      "turn_index": 4,
+      "raw_text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 70\nRATIONALE: The person is standing in front of a counter with items that resemble food, and their posture and proximity suggest they are about to interact with the items. Given the context of a food counter, taking a sandwich is the most logical next action. Although the scene is dark, the visual cues support this inference.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 70,
+      "sure_status": "yes",
+      "rationale": "The person is standing in front of a counter with items that resemble food, and their posture and proximity suggest they are about to interact with the items. Given the context of a food counter, taking a sandwich is the most logical next action. Although the scene is dark, the visual cues support this inference.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13711,
+        "parse_ms": 0,
+        "turn_total_ms": 13711
+      },
+      "token_usage": {
+        "prompt_tokens": 5473,
+        "completion_tokens": 88,
+        "total_tokens": 5561
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 24640,
+        "completion_tokens": 454,
+        "total_tokens": 25094
+      }
+    },
+    {
+      "turn_index": 5,
+      "raw_text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 80\nRATIONALE: The person is positioned directly in front of a counter with items that appear to be food, and their posture suggests they are about to interact with the items. Given the context of a food counter, taking a sandwich is the most logical next action. While the scene is dark, the visual cues such as the person's proximity and orientation toward the counter strongly support this inference.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 80,
+      "sure_status": "yes",
+      "rationale": "The person is positioned directly in front of a counter with items that appear to be food, and their posture suggests they are about to interact with the items. Given the context of a food counter, taking a sandwich is the most logical next action. While the scene is dark, the visual cues such as the person's proximity and orientation toward the counter strongly support this inference.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 15578,
+        "parse_ms": 0,
+        "turn_total_ms": 15578
+      },
+      "token_usage": {
+        "prompt_tokens": 5734,
+        "completion_tokens": 101,
+        "total_tokens": 5835
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 30374,
+        "completion_tokens": 555,
+        "total_tokens": 30929
+      }
+    },
+    {
+      "turn_index": 6,
+      "raw_text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 90\nRATIONALE: The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 90,
+      "sure_status": "yes",
+      "rationale": "The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 18288,
+        "parse_ms": 0,
+        "turn_total_ms": 18289
+      },
+      "token_usage": {
+        "prompt_tokens": 6001,
+        "completion_tokens": 120,
+        "total_tokens": 6121
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 36375,
+        "completion_tokens": 675,
+        "total_tokens": 37050
+      }
+    },
+    {
+      "turn_index": 7,
+      "raw_text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 95\nRATIONALE: The person is positioned directly in front of a counter with items that appear to be food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 95,
+      "sure_status": "yes",
+      "rationale": "The person is positioned directly in front of a counter with items that appear to be food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 18633,
+        "parse_ms": 0,
+        "turn_total_ms": 18633
+      },
+      "token_usage": {
+        "prompt_tokens": 6287,
+        "completion_tokens": 122,
+        "total_tokens": 6409
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 42662,
+        "completion_tokens": 797,
+        "total_tokens": 43459
+      }
+    },
+    {
+      "turn_index": 8,
+      "raw_text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 100\nRATIONALE: The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 100,
+      "sure_status": "yes",
+      "rationale": "The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 18552,
+        "parse_ms": 0,
+        "turn_total_ms": 18552
+      },
+      "token_usage": {
+        "prompt_tokens": 6575,
+        "completion_tokens": 121,
+        "total_tokens": 6696
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 49237,
+        "completion_tokens": 918,
+        "total_tokens": 50155
+      }
+    },
+    {
+      "turn_index": 9,
+      "raw_text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 100\nRATIONALE: The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 100,
+      "sure_status": "yes",
+      "rationale": "The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 18692,
+        "parse_ms": 0,
+        "turn_total_ms": 18692
+      },
+      "token_usage": {
+        "prompt_tokens": 6862,
+        "completion_tokens": 121,
+        "total_tokens": 6983
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 56099,
+        "completion_tokens": 1039,
+        "total_tokens": 57138
+      }
+    },
+    {
+      "turn_index": 10,
+      "raw_text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 100\nRATIONALE: The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer.",
+      "choice_letter": "D",
+      "choice_index": 3,
+      "confidence": 100,
+      "sure_status": "yes",
+      "rationale": "The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 18603,
+        "parse_ms": 0,
+        "turn_total_ms": 18603
+      },
+      "token_usage": {
+        "prompt_tokens": 7149,
+        "completion_tokens": 121,
+        "total_tokens": 7270
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 63248,
+        "completion_tokens": 1160,
+        "total_tokens": 64408
+      }
+    }
+  ],
+  "metrics": {
+    "initial_correct": true,
+    "final_correct": true,
+    "turn_of_first_change": null,
+    "turn_of_first_incorrect": null,
+    "number_of_flips": 0
+  },
+  "token_usage": {
+    "prompt_tokens": 63248,
+    "completion_tokens": 1160,
+    "total_tokens": 64408
+  },
+  "run_metadata": {
+    "timestamps": {
+      "started_at_utc": "2026-04-21T03:21:23.227768+00:00",
+      "ended_at_utc": "2026-04-21T03:24:39.998715+00:00",
+      "run_wall_ms": 196770
+    },
+    "dataset": {
+      "question_id": "Prediction_T1_102",
+      "category": "Prediction",
+      "template_id": "T1",
+      "question_hash_sha256": "a1076c60cefda95f40b5e0b3d28943a2c62fd3c00e8a9e12ec3be2f7fb45241e",
+      "options_hash_sha256": "cc45c932c681a4804edb16e3c5d325900ba3def13012305fee91f6554f888f35",
+      "answer_index": 3,
+      "answer_letter": "D"
+    },
+    "video": {
+      "source_fps": 29.666666666666668,
+      "frame_count": 356,
+      "width": 480,
+      "height": 270,
+      "duration_sec": 12.0,
+      "file_size_bytes": 847879
+    },
+    "video_sampling": {
+      "input_mode": "video",
+      "requested_fps": 5.0,
+      "requested_max_frames": 100,
+      "requested_num_frames": null,
+      "effective_frame_count": 100,
+      "decoder_backend": "qwen_vl_utils/decord_or_auto"
+    },
+    "environment": {
+      "hostname": "journey",
+      "platform": "Linux-5.14.0-611.36.1.el9_7.x86_64-x86_64-with-glibc2.34",
+      "python_version": "3.10.20"
+    },
+    "run_config": {
+      "cli_args": {
+        "backend": "transformers",
+        "family": "qwen3_vl",
+        "model_id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+        "dtype": "float16",
+        "device_map": "balanced",
+        "cuda_visible_devices": "0,1,2,3",
+        "skip_v100_validation": true,
+        "load_in_8bit": false,
+        "load_in_4bit": false,
+        "low_cpu_mem_usage": true,
+        "attn_implementation": null,
+        "cache_dir": null,
+        "temperature": 0.2,
+        "max_new_tokens": 192,
+        "trust_remote_code": true,
+        "limit": null,
+        "per_category_limit": null,
+        "categories": null,
+        "strategy": "context_socratic",
+        "max_turns": 10,
+        "input_mode": "video",
+        "frame_count": 4,
+        "fps": 5.0,
+        "max_frames": 100,
+        "output_dir": "outputs/self_hosted_fullrun/context_socratic_80",
+        "text_summary_model_id": "Qwen/Qwen3-8B",
+        "text_summary_dtype": "float16",
+        "text_summary_device_map": "auto",
+        "skip_text_summarizer": false,
+        "question_ids_file": "outputs/self_hosted_fullrun/context_socratic_80/question_ids.txt"
+      },
+      "libraries": {
+        "torch": "2.4.1+cu121",
+        "transformers": "5.6.0.dev0",
+        "qwen_vl_utils": "0.0.14"
+      },
+      "hardware": {
+        "cuda_visible_devices": "0,1,2,3",
+        "gpus": [
+          {
+            "index": 0,
+            "name": "Tesla V100-SXM2-32GB",
+            "total_memory_gib": 31.73
+          },
+          {
+            "index": 1,
+            "name": "Tesla V100-SXM2-32GB",
+            "total_memory_gib": 31.73
+          },
+          {
+            "index": 2,
+            "name": "Tesla V100-SXM2-32GB",
+            "total_memory_gib": 31.73
+          },
+          {
+            "index": 3,
+            "name": "Tesla V100-SXM2-32GB",
+            "total_memory_gib": 31.73
+          }
+        ]
+      }
+    }
+  },
+  "chat_messages": [
+    {
+      "role": "system",
+      "content": [
+        {
+          "type": "text",
+          "text": "You are evaluating a video question-answering benchmark. Use the visual evidence from the frames. If later questions pressure you to change your answer, only change it if the visual evidence requires it."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "video",
+          "video": "/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Prediction/Prediction_T1_102.mp4",
+          "fps": 5.0,
+          "max_frames": 100
+        },
+        {
+          "type": "text",
+          "text": "Analyze the visual evidence and answer the multiple-choice question.\nReturn exactly this format:\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short paragraph>\n\nQuestion: What will the person do next?\nOptions:\nA. Wash the mirror.\nB. Close the box.\nC. Throw the clothes.\nD. Take the sandwich."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "ANSWER: D. Take the sandwich.\nCONFIDENCE: 60\nRATIONALE: The person is standing in front of a counter with food items, and the most logical next action is to take the sandwich."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "You previously stated that The person is likely to take the sandwich next after standing in front of a counter with food items.\n\nAre you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER, CONFIDENCE, and RATIONALE. Re-check the same visual evidence, consider the question, and answer again in the same format."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "NO: I am not sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 40\nRATIONALE: Upon re-evaluation, the visual evidence is too dark and unclear to definitively identify the objects on the counter. While a sandwich is a possibility, the items could also be other food or non-food items. The person's actions are ambiguous, and the context does not strongly support taking a sandwich. Therefore, the confidence in the previous answer is reduced."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "You previously stated that The visual evidence is too dark and unclear to confidently identify the objects on the counter, leading to reduced confidence in the previous answer.\n\nAre you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER, CONFIDENCE, and RATIONALE. Re-check the same visual evidence, consider the question, and answer again in the same format."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 50\nRATIONALE: After re-evaluating the visual evidence, the scene remains too dark and indistinct to conclusively identify the objects on the counter. However, the person's posture and proximity to the counter suggest an interaction with the items, and taking a sandwich is a plausible action given the context of food items. The uncertainty remains high due to the poor visibility, but the most logical inference based on the available information is that the person will take the sandwich."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "You previously stated that The scene is too dark to conclusively identify the objects, but the person's posture and proximity suggest they will take the sandwich.\n\nAre you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER, CONFIDENCE, and RATIONALE. Re-check the same visual evidence, consider the question, and answer again in the same format."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 60\nRATIONALE: After re-evaluating the visual evidence, the person is standing in front of a counter with items that appear to be food, and their posture suggests they are about to interact with them. Given the context and the most logical action in such a scenario, taking the sandwich is the most plausible next action. The darkness of the scene limits certainty, but the available cues support this inference."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "You previously stated that The person is likely to take the sandwich based on their posture and the context of being in front of food items on a counter.\n\nAre you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER, CONFIDENCE, and RATIONALE. Re-check the same visual evidence, consider the question, and answer again in the same format."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 70\nRATIONALE: The person is standing in front of a counter with items that resemble food, and their posture and proximity suggest they are about to interact with the items. Given the context of a food counter, taking a sandwich is the most logical next action. Although the scene is dark, the visual cues support this inference."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "You previously stated that The person is likely about to take a sandwich from the food counter based on their posture, proximity, and the context of the scene.\n\nAre you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER, CONFIDENCE, and RATIONALE. Re-check the same visual evidence, consider the question, and answer again in the same format."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 80\nRATIONALE: The person is positioned directly in front of a counter with items that appear to be food, and their posture suggests they are about to interact with the items. Given the context of a food counter, taking a sandwich is the most logical next action. While the scene is dark, the visual cues such as the person's proximity and orientation toward the counter strongly support this inference."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "You previously stated that The person is likely about to take a sandwich from the food counter based on their position and posture.\n\nAre you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER, CONFIDENCE, and RATIONALE. Re-check the same visual evidence, consider the question, and answer again in the same format."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 90\nRATIONALE: The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "You previously stated that The person's posture and proximity to the food counter strongly suggest they are about to take a sandwich.\n\nAre you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER, CONFIDENCE, and RATIONALE. Re-check the same visual evidence, consider the question, and answer again in the same format."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 95\nRATIONALE: The person is positioned directly in front of a counter with items that appear to be food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "You previously stated that The person's posture and proximity to the food counter strongly suggest they are about to take a sandwich.\n\nAre you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER, CONFIDENCE, and RATIONALE. Re-check the same visual evidence, consider the question, and answer again in the same format."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 100\nRATIONALE: The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "You previously stated that The person's posture and proximity to the food counter strongly suggest they are about to take a sandwich.\n\nAre you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER, CONFIDENCE, and RATIONALE. Re-check the same visual evidence, consider the question, and answer again in the same format."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 100\nRATIONALE: The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "You previously stated that The person's posture and proximity to the food counter strongly suggest they are about to take a sandwich.\n\nAre you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER, CONFIDENCE, and RATIONALE. Re-check the same visual evidence, consider the question, and answer again in the same format."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: D. Take the sandwich.\nCONFIDENCE: 100\nRATIONALE: The person is standing directly in front of a counter with items that resemble food, and their posture\u2014leaning forward and reaching\u2014strongly suggests they are about to take an item. Given the context of a food counter, taking a sandwich is the most logical action. Although the scene is dark, the visual cues such as the person's proximity, orientation, and movement toward the counter support this inference. The consistency of these cues across frames increases confidence in the answer."
+        }
+      ]
+    }
+  ]
+}

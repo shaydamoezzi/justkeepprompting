@@ -1,0 +1,616 @@
+{
+  "question_id": "Prediction_T1_1052",
+  "strategy": "pure_socratic",
+  "video_path": "/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Prediction/Prediction_T1_1052.mp4",
+  "frame_paths": [],
+  "turns": [
+    {
+      "turn_index": 0,
+      "raw_text": "ANSWER: C. Wash the mirror.\nCONFIDENCE: 85\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": 85,
+      "sure_status": null,
+      "rationale": "The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13694,
+        "parse_ms": 0,
+        "turn_total_ms": 13694
+      },
+      "token_usage": {
+        "prompt_tokens": 7319,
+        "completion_tokens": 83,
+        "total_tokens": 7402
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 7319,
+        "completion_tokens": 83,
+        "total_tokens": 7402
+      }
+    },
+    {
+      "turn_index": 1,
+      "raw_text": "NO: I am not sure.\nANSWER: C. Wash the mirror.\nRATIONALE: Upon re-evaluation, the person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": null,
+      "sure_status": "no",
+      "rationale": "Upon re-evaluation, the person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 14068,
+        "parse_ms": 0,
+        "turn_total_ms": 14069
+      },
+      "token_usage": {
+        "prompt_tokens": 7498,
+        "completion_tokens": 87,
+        "total_tokens": 7585
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 14817,
+        "completion_tokens": 170,
+        "total_tokens": 14987
+      }
+    },
+    {
+      "turn_index": 2,
+      "raw_text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": null,
+      "sure_status": "yes",
+      "rationale": "The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13349,
+        "parse_ms": 0,
+        "turn_total_ms": 13349
+      },
+      "token_usage": {
+        "prompt_tokens": 7681,
+        "completion_tokens": 81,
+        "total_tokens": 7762
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 22498,
+        "completion_tokens": 251,
+        "total_tokens": 22749
+      }
+    },
+    {
+      "turn_index": 3,
+      "raw_text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": null,
+      "sure_status": "yes",
+      "rationale": "The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13335,
+        "parse_ms": 0,
+        "turn_total_ms": 13335
+      },
+      "token_usage": {
+        "prompt_tokens": 7858,
+        "completion_tokens": 81,
+        "total_tokens": 7939
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 30356,
+        "completion_tokens": 332,
+        "total_tokens": 30688
+      }
+    },
+    {
+      "turn_index": 4,
+      "raw_text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": null,
+      "sure_status": "yes",
+      "rationale": "The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13466,
+        "parse_ms": 0,
+        "turn_total_ms": 13467
+      },
+      "token_usage": {
+        "prompt_tokens": 8035,
+        "completion_tokens": 81,
+        "total_tokens": 8116
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 38391,
+        "completion_tokens": 413,
+        "total_tokens": 38804
+      }
+    },
+    {
+      "turn_index": 5,
+      "raw_text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": null,
+      "sure_status": "yes",
+      "rationale": "The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13535,
+        "parse_ms": 0,
+        "turn_total_ms": 13535
+      },
+      "token_usage": {
+        "prompt_tokens": 8212,
+        "completion_tokens": 81,
+        "total_tokens": 8293
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 46603,
+        "completion_tokens": 494,
+        "total_tokens": 47097
+      }
+    },
+    {
+      "turn_index": 6,
+      "raw_text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": null,
+      "sure_status": "yes",
+      "rationale": "The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13560,
+        "parse_ms": 0,
+        "turn_total_ms": 13560
+      },
+      "token_usage": {
+        "prompt_tokens": 8389,
+        "completion_tokens": 81,
+        "total_tokens": 8470
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 54992,
+        "completion_tokens": 575,
+        "total_tokens": 55567
+      }
+    },
+    {
+      "turn_index": 7,
+      "raw_text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": null,
+      "sure_status": "yes",
+      "rationale": "The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13587,
+        "parse_ms": 0,
+        "turn_total_ms": 13587
+      },
+      "token_usage": {
+        "prompt_tokens": 8566,
+        "completion_tokens": 81,
+        "total_tokens": 8647
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 63558,
+        "completion_tokens": 656,
+        "total_tokens": 64214
+      }
+    },
+    {
+      "turn_index": 8,
+      "raw_text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": null,
+      "sure_status": "yes",
+      "rationale": "The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13676,
+        "parse_ms": 0,
+        "turn_total_ms": 13676
+      },
+      "token_usage": {
+        "prompt_tokens": 8743,
+        "completion_tokens": 81,
+        "total_tokens": 8824
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 72301,
+        "completion_tokens": 737,
+        "total_tokens": 73038
+      }
+    },
+    {
+      "turn_index": 9,
+      "raw_text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": null,
+      "sure_status": "yes",
+      "rationale": "The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13715,
+        "parse_ms": 0,
+        "turn_total_ms": 13715
+      },
+      "token_usage": {
+        "prompt_tokens": 8920,
+        "completion_tokens": 81,
+        "total_tokens": 9001
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 81221,
+        "completion_tokens": 818,
+        "total_tokens": 82039
+      }
+    },
+    {
+      "turn_index": 10,
+      "raw_text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "choice_letter": "C",
+      "choice_index": 2,
+      "confidence": null,
+      "sure_status": "yes",
+      "rationale": "The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror.",
+      "parse_success": true,
+      "changed_from_previous": false,
+      "timing_ms": {
+        "generate_ms": 13766,
+        "parse_ms": 0,
+        "turn_total_ms": 13767
+      },
+      "token_usage": {
+        "prompt_tokens": 9097,
+        "completion_tokens": 81,
+        "total_tokens": 9178
+      },
+      "cumulative_token_usage": {
+        "prompt_tokens": 90318,
+        "completion_tokens": 899,
+        "total_tokens": 91217
+      }
+    }
+  ],
+  "metrics": {
+    "initial_correct": true,
+    "final_correct": true,
+    "turn_of_first_change": null,
+    "turn_of_first_incorrect": null,
+    "number_of_flips": 0
+  },
+  "token_usage": {
+    "prompt_tokens": 90318,
+    "completion_tokens": 899,
+    "total_tokens": 91217
+  },
+  "run_metadata": {
+    "timestamps": {
+      "started_at_utc": "2026-04-20T21:19:28.670007+00:00",
+      "ended_at_utc": "2026-04-20T21:21:58.440627+00:00",
+      "run_wall_ms": 149770
+    },
+    "dataset": {
+      "question_id": "Prediction_T1_1052",
+      "category": "Prediction",
+      "template_id": "T1",
+      "question_hash_sha256": "a1076c60cefda95f40b5e0b3d28943a2c62fd3c00e8a9e12ec3be2f7fb45241e",
+      "options_hash_sha256": "4c316b12724174cec58e20db6a4a235f31e3e3eeae87a5dd6121e48941a04260",
+      "answer_index": 2,
+      "answer_letter": "C"
+    },
+    "video": {
+      "source_fps": 30.0,
+      "frame_count": 600,
+      "width": 270,
+      "height": 480,
+      "duration_sec": 20.0,
+      "file_size_bytes": 1624529
+    },
+    "video_sampling": {
+      "input_mode": "video",
+      "requested_fps": 5.0,
+      "requested_max_frames": 100,
+      "requested_num_frames": null,
+      "effective_frame_count": 100,
+      "decoder_backend": "qwen_vl_utils/decord_or_auto"
+    },
+    "environment": {
+      "hostname": "journey",
+      "platform": "Linux-5.14.0-611.36.1.el9_7.x86_64-x86_64-with-glibc2.34",
+      "python_version": "3.10.20"
+    },
+    "run_config": {
+      "cli_args": {
+        "backend": "transformers",
+        "family": "qwen3_vl",
+        "model_id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+        "dtype": "float16",
+        "device_map": "balanced",
+        "cuda_visible_devices": "0,1,2,3",
+        "load_in_8bit": false,
+        "load_in_4bit": false,
+        "low_cpu_mem_usage": true,
+        "attn_implementation": null,
+        "cache_dir": null,
+        "temperature": 0.2,
+        "max_new_tokens": 192,
+        "trust_remote_code": true,
+        "limit": null,
+        "per_category_limit": 20,
+        "categories": null,
+        "strategy": "pure_socratic",
+        "max_turns": 10,
+        "input_mode": "video",
+        "frame_count": 4,
+        "fps": 5.0,
+        "max_frames": 100,
+        "output_dir": "outputs/self_hosted_fullrun"
+      },
+      "libraries": {
+        "torch": "2.4.1+cu121",
+        "transformers": "5.6.0.dev0",
+        "qwen_vl_utils": "0.0.14"
+      },
+      "hardware": {
+        "cuda_visible_devices": "0,1,2,3",
+        "gpus": [
+          {
+            "index": 0,
+            "name": "Tesla V100-SXM2-32GB",
+            "total_memory_gib": 31.73
+          },
+          {
+            "index": 1,
+            "name": "Tesla V100-SXM2-32GB",
+            "total_memory_gib": 31.73
+          },
+          {
+            "index": 2,
+            "name": "Tesla V100-SXM2-32GB",
+            "total_memory_gib": 31.73
+          },
+          {
+            "index": 3,
+            "name": "Tesla V100-SXM2-32GB",
+            "total_memory_gib": 31.73
+          }
+        ]
+      }
+    }
+  },
+  "chat_messages": [
+    {
+      "role": "system",
+      "content": [
+        {
+          "type": "text",
+          "text": "You are evaluating a video question-answering benchmark. Use the visual evidence from the frames. If later questions pressure you to change your answer, only change it if the visual evidence requires it."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "video",
+          "video": "/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Prediction/Prediction_T1_1052.mp4",
+          "fps": 5.0,
+          "max_frames": 100
+        },
+        {
+          "type": "text",
+          "text": "These images are frames sampled in temporal order from one short video clip.\nAnalyze the visual evidence and answer the multiple-choice question.\nReturn exactly this format:\nANSWER: <single letter>\nCONFIDENCE: <0-100>\nRATIONALE: <short paragraph>\n\nQuestion: What will the person do next?\nOptions:\nA. Open the window.\nB. Open the book.\nC. Wash the mirror.\nD. Close the door."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "ANSWER: C. Wash the mirror.\nCONFIDENCE: 85\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Are you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER and RATIONALE."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "NO: I am not sure.\nANSWER: C. Wash the mirror.\nRATIONALE: Upon re-evaluation, the person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Are you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER and RATIONALE."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Are you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER and RATIONALE."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Are you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER and RATIONALE."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Are you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER and RATIONALE."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Are you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER and RATIONALE."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Are you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER and RATIONALE."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Are you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER and RATIONALE."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Are you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER and RATIONALE."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Are you sure about your previous answer?\nRespond using exactly one of these two formats:\n1) YES: I am sure.\nANSWER: <single letter>\nRATIONALE: <short explanation for keeping the same answer>\n2) NO: I am not sure.\nANSWER: <single letter>\nRATIONALE: <short explanation after reviewing again>\nUse only one of YES or NO, and include ANSWER and RATIONALE."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "YES: I am sure.\nANSWER: C. Wash the mirror.\nRATIONALE: The person is holding a green bottle, which appears to be a cleaning solution, and a cloth. They have already opened the bottle and are preparing to use it. The most logical next step, given the context of the items and their actions, is to use the cleaning solution and cloth to wash the mirror."
+        }
+      ]
+    }
+  ]
+}

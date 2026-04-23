@@ -1,0 +1,978 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+import base64
+import os
+from pathlib import Path
+import time
+from typing import Any, Protocol
+
+import cv2
+from .conversation import ConversationState
+from .dataset import StarExample
+
+
+@dataclass
+class BackendResponse:
+    text: str
+    token_usage: dict[str, int] | None = None
+
+
+class ChatBackend(Protocol):
+    def generate(self, state: ConversationState, turn_index: int) -> BackendResponse:
+        ...
+
+
+class MockChatBackend:
+    """Deterministic backend for smoke-testing the chat loop and metrics."""
+
+    def generate(self, state: ConversationState, turn_index: int) -> BackendResponse:
+        example = state.example
+        strategy = state.strategy
+
+        if strategy == "adversarial_negation":
+            letter = example.answer_letter if turn_index < 2 else _alternate_letter(example)
+            confidence = 86 if turn_index == 0 else max(35, 86 - turn_index * 18)
+            rationale = (
+                "The earlier frames support the original answer."
+                if turn_index < 2
+                else "After repeated pushback, the answer changed during the smoke test."
+            )
+            text = (
+                f"ANSWER: {letter}\n"
+                f"CONFIDENCE: {confidence}\n"
+                f"RATIONALE: {rationale}"
+            )
+        elif strategy == "pure_socratic":
+            letter = example.answer_letter
+            confidence = max(62, 90 - turn_index * 4)
+            rationale = "The frames still support the same option after another why-question."
+            if turn_index == 0:
+                text = (
+                    f"ANSWER: {letter}\n"
+                    f"CONFIDENCE: {confidence}\n"
+                    f"RATIONALE: {rationale}"
+                )
+            else:
+                text = (
+                    "YES: I am sure.\n"
+                    f"ANSWER: {letter}\n"
+                    f"CONFIDENCE: {confidence}\n"
+                    f"RATIONALE: {rationale}"
+                )
+        else:
+            letter = example.answer_letter
+            confidence = max(68, 92 - turn_index * 3)
+            rationale = "The summary of the previous answer remains visually consistent with the frames."
+            if turn_index == 0:
+                text = (
+                    f"ANSWER: {letter}\n"
+                    f"CONFIDENCE: {confidence}\n"
+                    f"RATIONALE: {rationale}"
+                )
+            else:
+                text = (
+                    "YES: I am sure.\n"
+                    f"ANSWER: {letter}\n"
+                    f"CONFIDENCE: {confidence}\n"
+                    f"RATIONALE: {rationale}"
+                )
+
+        return BackendResponse(text=text, token_usage=None)
+
+
+class TransformersImageChatBackend:
+    """Minimal image-chat backend for future real-model runs."""
+
+    def __init__(self, config: dict[str, Any]):
+        self.config = config
+        self.model_id = config["model_id"]
+        self.family = config["family"]
+        self.temperature = float(config.get("temperature", 0.2))
+        self.max_new_tokens = int(config.get("max_new_tokens", 192))
+        self.attn_implementation = config.get("attn_implementation")
+        self.do_sample = bool(config.get("do_sample", self.temperature > 0))
+        self.top_p = config.get("top_p")
+        self.top_k = config.get("top_k")
+        self.hf_token = config.get("hf_token") or os.getenv("HF_TOKEN")
+        self.cache_dir = config.get("cache_dir")
+        self._qwen_vision_cache: dict[str, dict[str, Any]] = {}
+
+        from transformers import AutoProcessor
+
+        self.processor = AutoProcessor.from_pretrained(
+            self.model_id,
+            trust_remote_code=bool(config.get("trust_remote_code", True)),
+            token=self.hf_token,
+            cache_dir=self.cache_dir,
+        )
+
+        common_kwargs = {
+            "device_map": config.get("device_map", "auto"),
+            "low_cpu_mem_usage": bool(config.get("low_cpu_mem_usage", True)),
+            "trust_remote_code": bool(config.get("trust_remote_code", True)),
+            "token": self.hf_token,
+            "cache_dir": self.cache_dir,
+        }
+        if "max_memory" in config:
+            common_kwargs["max_memory"] = config["max_memory"]
+        if "offload_folder" in config:
+            common_kwargs["offload_folder"] = config["offload_folder"]
+        if self.attn_implementation:
+            common_kwargs["attn_implementation"] = self.attn_implementation
+
+        import torch
+
+        if bool(config.get("load_in_8bit", False)) or bool(config.get("load_in_4bit", False)):
+            from transformers import BitsAndBytesConfig
+
+            common_kwargs["quantization_config"] = BitsAndBytesConfig(
+                load_in_8bit=bool(config.get("load_in_8bit", False)),
+                load_in_4bit=bool(config.get("load_in_4bit", False)),
+            )
+        else:
+            dtype_name = config.get("dtype", "float16")
+            common_kwargs["torch_dtype"] = {
+                "float16": torch.float16,
+                "fp16": torch.float16,
+                "bfloat16": torch.bfloat16,
+                "bf16": torch.bfloat16,
+                "float32": torch.float32,
+                "fp32": torch.float32,
+            }[dtype_name]
+
+        if self.family == "internvl3_5":
+            from transformers import AutoModelForImageTextToText
+
+            self.model = AutoModelForImageTextToText.from_pretrained(
+                self.model_id,
+                **common_kwargs,
+            )
+        elif self.family == "qwen3_vl":
+            from transformers import Qwen3VLMoeForConditionalGeneration
+
+            self.model = Qwen3VLMoeForConditionalGeneration.from_pretrained(
+                self.model_id,
+                **common_kwargs,
+            )
+        else:
+            raise ValueError(f"Unsupported family: {self.family}")
+
+    def generate(self, state: ConversationState, turn_index: int) -> BackendResponse:
+        if self.family == "qwen3_vl":
+            qwen_messages = _format_qwen_messages(state.messages)
+            prompt_text = self.processor.apply_chat_template(
+                qwen_messages,
+                tokenize=False,
+                add_generation_prompt=True,
+            )
+            cache_key = _qwen_state_cache_key(state)
+            cached_vision = self._qwen_vision_cache.get(cache_key)
+            if cached_vision is None:
+                from qwen_vl_utils import process_vision_info
+
+                try:
+                    image_inputs, video_inputs, processed_video_kwargs = process_vision_info(
+                        qwen_messages,
+                        return_video_kwargs=True,
+                        return_video_metadata=True,
+                    )
+                except TypeError:
+                    # Backward compatibility for older qwen-vl-utils versions.
+                    image_inputs, video_inputs = process_vision_info(qwen_messages)
+                    processed_video_kwargs = {}
+                video_metadata = None
+                if video_inputs is not None:
+                    # qwen-vl-utils can return [(video_tensor, metadata), ...]
+                    # when return_video_metadata=True.
+                    if video_inputs and isinstance(video_inputs[0], tuple):
+                        video_inputs, video_metadata = map(list, zip(*video_inputs))
+                cached_vision = {
+                    "image_inputs": image_inputs,
+                    "video_inputs": video_inputs,
+                    "video_metadata": video_metadata,
+                    "processed_video_kwargs": processed_video_kwargs,
+                }
+                self._qwen_vision_cache[cache_key] = cached_vision
+
+            inputs = self.processor(
+                text=[prompt_text],
+                images=cached_vision["image_inputs"],
+                videos=cached_vision["video_inputs"],
+                video_metadata=cached_vision["video_metadata"],
+                **cached_vision["processed_video_kwargs"],
+                return_tensors="pt",
+            )
+        else:
+            internvl_messages, image_inputs = _prepare_internvl_messages_and_images(state.messages)
+            prompt_text = self.processor.apply_chat_template(
+                internvl_messages,
+                tokenize=False,
+                add_generation_prompt=True,
+            )
+            inputs = self.processor(
+                text=[prompt_text],
+                images=image_inputs if image_inputs else None,
+                return_tensors="pt",
+            )
+
+        inputs = inputs.to(self.model.device)
+        generate_kwargs: dict[str, Any] = {
+            "do_sample": self.do_sample,
+            "max_new_tokens": self.max_new_tokens,
+        }
+        if self.do_sample and self.temperature > 0:
+            generate_kwargs["temperature"] = self.temperature
+        if self.top_p is not None:
+            generate_kwargs["top_p"] = float(self.top_p)
+        if self.top_k is not None:
+            generate_kwargs["top_k"] = int(self.top_k)
+        generated = self.model.generate(
+            **inputs,
+            **generate_kwargs,
+        )
+        prompt_len = inputs["input_ids"].shape[1]
+        output_text = self.processor.decode(
+            generated[0, prompt_len:],
+            skip_special_tokens=True,
+        )
+        completion_tokens = int(generated.shape[1] - prompt_len)
+        token_usage = {
+            "prompt_tokens": int(prompt_len),
+            "completion_tokens": completion_tokens,
+            "total_tokens": int(prompt_len + completion_tokens),
+        }
+        return BackendResponse(text=output_text, token_usage=token_usage)
+
+
+class OpenAICompatibleChatBackend:
+    """Chat backend for OpenAI-compatible multimodal APIs (including Gemini endpoints)."""
+
+    def __init__(self, config: dict[str, Any]):
+        from openai import OpenAI
+
+        self.config = config
+        self.model_id = str(config["model_id"])
+        self.temperature = float(config.get("temperature", 0.2))
+        self.max_new_tokens = int(config.get("max_new_tokens", 192))
+        self.api_base_url = config.get("api_base_url")
+        self.api_key = (
+            config.get("api_key")
+            or os.getenv(str(config.get("api_key_env_var", "GEMINI_API_KEY")))
+            or os.getenv("OPENAI_API_KEY")
+        )
+        if not self.api_key:
+            raise ValueError(
+                "Missing API key. Set GEMINI_API_KEY (or OPENAI_API_KEY), "
+                "or pass api_key in backend config."
+            )
+        self.timeout_seconds = float(config.get("timeout_seconds", 120.0))
+        self.min_seconds_between_requests = float(config.get("min_seconds_between_requests", 0.0))
+        self._last_request_at = 0.0
+        self._client = OpenAI(
+            api_key=self.api_key,
+            base_url=self.api_base_url,
+            timeout=self.timeout_seconds,
+        )
+
+    def generate(self, state: ConversationState, turn_index: int) -> BackendResponse:
+        if self.min_seconds_between_requests > 0:
+            elapsed = time.monotonic() - self._last_request_at
+            remaining = self.min_seconds_between_requests - elapsed
+            if remaining > 0:
+                time.sleep(remaining)
+
+        messages = _format_openai_compatible_messages(state.messages)
+        response = self._client.chat.completions.create(
+            model=self.model_id,
+            messages=messages,
+            temperature=self.temperature,
+            max_tokens=self.max_new_tokens,
+        )
+        self._last_request_at = time.monotonic()
+
+        text = response.choices[0].message.content or ""
+        usage = getattr(response, "usage", None)
+        token_usage = None
+        if usage is not None:
+            token_usage = {
+                "prompt_tokens": int(getattr(usage, "prompt_tokens", 0) or 0),
+                "completion_tokens": int(getattr(usage, "completion_tokens", 0) or 0),
+                "total_tokens": int(getattr(usage, "total_tokens", 0) or 0),
+            }
+        return BackendResponse(text=text, token_usage=token_usage)
+
+
+class GeminiNativeChatBackend:
+    """Gemini backend using google-genai Files API + generate_content."""
+
+    def __init__(self, config: dict[str, Any]):
+        from google import genai
+
+        self.config = config
+        self.model_id = str(config["model_id"])
+        self.temperature = float(config.get("temperature", 1.0))
+        self.max_new_tokens = int(config.get("max_new_tokens", 192))
+        self.api_key = config.get("api_key") or os.getenv(str(config.get("api_key_env_var", "GEMINI_API_KEY")))
+        if not self.api_key:
+            raise ValueError("Missing API key. Set GEMINI_API_KEY or pass api_key in backend config.")
+        self.timeout_seconds = float(config.get("timeout_seconds", 180.0))
+        self.min_seconds_between_requests = float(config.get("min_seconds_between_requests", 0.0))
+        self.poll_interval_seconds = float(config.get("file_poll_interval_seconds", 2.0))
+        self.debug_io = bool(config.get("debug_io", False))
+        self.compact_history = bool(config.get("compact_history", True))
+        self.thinking_budget = config.get("thinking_budget")
+        self._last_request_at = 0.0
+        self._client = genai.Client(api_key=self.api_key)
+        self._uploaded_files_cache: dict[str, Any] = {}
+        self._chat_sessions: dict[str, Any] = {}
+
+    def generate(self, state: ConversationState, turn_index: int) -> BackendResponse:
+        if self.min_seconds_between_requests > 0:
+            elapsed = time.monotonic() - self._last_request_at
+            remaining = self.min_seconds_between_requests - elapsed
+            if remaining > 0:
+                time.sleep(remaining)
+
+        chat_key = _qwen_state_cache_key(state)
+        chat = self._chat_sessions.get(chat_key)
+        if chat is None:
+            chat = self._create_chat_session(state)
+            self._chat_sessions[chat_key] = chat
+
+        response = chat.send_message(self._latest_user_message_parts(state))
+        self._last_request_at = time.monotonic()
+        if self.debug_io:
+            self._debug_response("primary", response)
+
+        usage = getattr(response, "usage_metadata", None)
+        token_usage = None
+        if usage is not None:
+            prompt_tokens = int(getattr(usage, "prompt_token_count", 0) or 0)
+            completion_tokens = int(getattr(usage, "candidates_token_count", 0) or 0)
+            total_tokens = int(getattr(usage, "total_token_count", 0) or 0)
+            token_usage = {
+                "prompt_tokens": prompt_tokens,
+                "completion_tokens": completion_tokens,
+                "total_tokens": total_tokens,
+            }
+
+        text = (response.text or "").strip()
+        if not _looks_like_complete_structured_answer(text):
+            repaired = self._repair_response_format(
+                chat=chat,
+                draft_text=text,
+            )
+            if repaired:
+                text = repaired
+        return BackendResponse(text=text, token_usage=token_usage)
+
+    def _repair_response_format(
+        self,
+        *,
+        chat: Any,
+        draft_text: str,
+    ) -> str | None:
+        if self.min_seconds_between_requests > 0:
+            elapsed = time.monotonic() - self._last_request_at
+            remaining = self.min_seconds_between_requests - elapsed
+            if remaining > 0:
+                time.sleep(remaining)
+
+        repair_prompt = (
+            "You omitted required fields. Re-output the answer exactly in this format only:\n"
+            "ANSWER: <single letter>\n"
+            "CONFIDENCE: <0-100>\n"
+            "RATIONALE: <short paragraph>"
+        )
+        if draft_text:
+            repair_prompt = f"Previous incomplete answer:\n{draft_text}\n\n{repair_prompt}"
+        response = chat.send_message(
+            repair_prompt,
+            config=self._chat_config(temperature=0.0, max_output_tokens=max(self.max_new_tokens, 512)),
+        )
+        self._last_request_at = time.monotonic()
+        if self.debug_io:
+            self._debug_response("repair", response)
+        fixed = (response.text or "").strip()
+        if _looks_like_complete_structured_answer(fixed):
+            return fixed
+        return None
+
+    def _debug_response(self, label: str, response: Any) -> None:
+        try:
+            candidates = getattr(response, "candidates", None) or []
+            finish_reason = None
+            if candidates:
+                finish_reason = getattr(candidates[0], "finish_reason", None)
+            usage = getattr(response, "usage_metadata", None)
+            prompt_tokens = getattr(usage, "prompt_token_count", None) if usage is not None else None
+            completion_tokens = getattr(usage, "candidates_token_count", None) if usage is not None else None
+            total_tokens = getattr(usage, "total_token_count", None) if usage is not None else None
+            print(
+                (
+                    f"[Gemini debug:{label}] finish_reason={finish_reason} "
+                    f"prompt_tokens={prompt_tokens} completion_tokens={completion_tokens} total_tokens={total_tokens}"
+                ),
+                flush=True,
+            )
+            print(f"[Gemini debug:{label}] text={repr((response.text or '').strip())}", flush=True)
+        except Exception as exc:  # pragma: no cover
+            print(f"[Gemini debug:{label}] failed to print response debug: {exc}", flush=True)
+
+    def _create_chat_session(self, state: ConversationState) -> Any:
+        system_lines: list[str] = []
+        for msg in state.messages:
+            if str(msg.get("role", "user")) != "system":
+                continue
+            content = msg.get("content", [])
+            if not isinstance(content, list):
+                continue
+            for block in content:
+                if isinstance(block, dict) and block.get("type") == "text":
+                    system_lines.append(str(block.get("text", "")))
+
+        chat = self._client.chats.create(
+            model=self.model_id,
+            config=self._chat_config(system_instruction="\n".join(system_lines).strip() or None),
+            history=[],
+        )
+        return chat
+
+    def _latest_user_message_parts(self, state: ConversationState) -> list[Any] | str:
+        from google.genai import types
+
+        latest_user = next(
+            (msg for msg in reversed(state.messages) if str(msg.get("role", "user")) == "user"),
+            None,
+        )
+        if latest_user is None:
+            return ""
+        content = latest_user.get("content", [])
+        if not isinstance(content, list):
+            return str(content)
+        return self._parts_from_blocks(content)
+
+    def _parts_from_blocks(self, blocks: object) -> list[Any]:
+        from google.genai import types
+
+        if not isinstance(blocks, list):
+            return [types.Part.from_text(text=str(blocks))]
+        parts: list[Any] = []
+        for block in blocks:
+            if not isinstance(block, dict):
+                continue
+            block_type = block.get("type")
+            if block_type == "text":
+                text = str(block.get("text", ""))
+                if text:
+                    parts.append(types.Part.from_text(text=text))
+            elif block_type == "image":
+                image_path = str(block.get("image", "")).strip()
+                if image_path:
+                    parts.append(
+                        types.Part.from_bytes(
+                            data=Path(image_path).expanduser().resolve().read_bytes(),
+                            mime_type=_guess_image_mime_type(image_path),
+                        )
+                    )
+            elif block_type == "video":
+                video_path = str(block.get("video", "")).strip()
+                if not video_path:
+                    continue
+                fps = float(block["fps"]) if block.get("fps") is not None else None
+                max_frames = int(block["max_frames"]) if block.get("max_frames") is not None else None
+                file_ref = self._get_or_upload_video_file(video_path)
+                video_part = types.Part.from_uri(file_uri=file_ref.uri, mime_type=file_ref.mime_type)
+                metadata_kwargs: dict[str, Any] = {}
+                if fps is not None:
+                    metadata_kwargs["fps"] = float(max(0.1, min(fps, 24.0)))
+                if fps is not None and max_frames is not None and max_frames > 0:
+                    metadata_kwargs["end_offset"] = f"{(max_frames / fps):.3f}s"
+                if metadata_kwargs:
+                    video_part.video_metadata = types.VideoMetadata(**metadata_kwargs)
+                parts.append(video_part)
+        return parts
+
+    def _chat_config(
+        self,
+        *,
+        temperature: float | None = None,
+        max_output_tokens: int | None = None,
+        system_instruction: str | None = None,
+    ) -> Any:
+        from google.genai import types
+
+        output_tokens = max_output_tokens
+        kwargs: dict[str, Any] = {
+            "temperature": self.temperature if temperature is None else temperature,
+            "max_output_tokens": output_tokens,
+            "system_instruction": system_instruction,
+        }
+        if self.thinking_budget is not None:
+            kwargs["thinking_config"] = types.ThinkingConfig(thinking_budget=int(self.thinking_budget))
+        return types.GenerateContentConfig(
+            **kwargs,
+        )
+
+    def _build_gemini_contents(self, state: ConversationState) -> tuple[str, list[Any]]:
+        from google.genai import types
+
+        source_messages = state.messages
+        if self.compact_history and len(state.messages) > 2:
+            # Keep context compact for long multi-turn video chats:
+            # - system prompt
+            # - original user multimodal question (contains video)
+            # - latest user follow-up instruction only
+            first_user_idx = next(
+                (idx for idx, msg in enumerate(state.messages) if str(msg.get("role", "user")) == "user"),
+                None,
+            )
+            latest_user_idx = next(
+                (idx for idx in range(len(state.messages) - 1, -1, -1) if str(state.messages[idx].get("role", "user")) == "user"),
+                None,
+            )
+            compact: list[dict[str, object]] = []
+            for msg in state.messages:
+                if str(msg.get("role", "user")) == "system":
+                    compact.append(msg)
+                    break
+            if first_user_idx is not None:
+                compact.append(state.messages[first_user_idx])
+            if latest_user_idx is not None and latest_user_idx != first_user_idx:
+                latest_user = state.messages[latest_user_idx]
+                content = latest_user.get("content", [])
+                if isinstance(content, list):
+                    text_only = [
+                        block
+                        for block in content
+                        if isinstance(block, dict) and block.get("type") == "text"
+                    ]
+                    compact.append({"role": "user", "content": text_only if text_only else content})
+                else:
+                    compact.append(latest_user)
+            source_messages = compact
+
+        system_instruction = ""
+        contents: list[Any] = []
+
+        for message in source_messages:
+            role = str(message.get("role", "user"))
+            raw_content = message.get("content", [])
+            if not isinstance(raw_content, list):
+                raw_content = [{"type": "text", "text": str(raw_content)}]
+
+            if role == "system":
+                for block in raw_content:
+                    if isinstance(block, dict) and block.get("type") == "text":
+                        system_instruction += str(block.get("text", "")) + "\n"
+                continue
+
+            parts: list[Any] = []
+            for block in raw_content:
+                if not isinstance(block, dict):
+                    continue
+                block_type = block.get("type")
+                if block_type == "text":
+                    text = str(block.get("text", ""))
+                    if text:
+                        parts.append(types.Part.from_text(text=text))
+                elif block_type == "image":
+                    image_path = str(block.get("image", "")).strip()
+                    if image_path:
+                        parts.append(
+                            types.Part.from_bytes(
+                                data=Path(image_path).expanduser().resolve().read_bytes(),
+                                mime_type=_guess_image_mime_type(image_path),
+                            )
+                        )
+                elif block_type == "video":
+                    video_path = str(block.get("video", "")).strip()
+                    if not video_path:
+                        continue
+                    fps = float(block["fps"]) if block.get("fps") is not None else None
+                    max_frames = int(block["max_frames"]) if block.get("max_frames") is not None else None
+                    file_ref = self._get_or_upload_video_file(video_path)
+                    video_part = types.Part.from_uri(file_uri=file_ref.uri, mime_type=file_ref.mime_type)
+                    metadata_kwargs: dict[str, Any] = {}
+                    if fps is not None:
+                        metadata_kwargs["fps"] = float(max(0.1, min(fps, 24.0)))
+                    if fps is not None and max_frames is not None and max_frames > 0:
+                        metadata_kwargs["end_offset"] = f"{(max_frames / fps):.3f}s"
+                    if metadata_kwargs:
+                        video_part.video_metadata = types.VideoMetadata(**metadata_kwargs)
+                    parts.append(video_part)
+
+            if not parts:
+                continue
+            mapped_role = "model" if role == "assistant" else "user"
+            contents.append(types.Content(role=mapped_role, parts=parts))
+
+        return system_instruction.strip(), contents
+
+    def _get_or_upload_video_file(self, video_path: str) -> Any:
+        resolved = str(Path(video_path).expanduser().resolve())
+        cached = self._uploaded_files_cache.get(resolved)
+        if cached is not None:
+            return cached
+
+        file_ref = self._client.files.upload(file=resolved)
+        while True:
+            state = getattr(file_ref, "state", None)
+            state_name = getattr(state, "name", state)
+            state_text = str(state_name or "")
+            if state_text == "ACTIVE":
+                break
+            if state_text == "FAILED":
+                raise RuntimeError(f"Gemini file processing failed for {resolved}")
+            time.sleep(self.poll_interval_seconds)
+            file_ref = self._client.files.get(name=file_ref.name)
+
+        self._uploaded_files_cache[resolved] = file_ref
+        return file_ref
+
+
+def _alternate_letter(example: StarExample) -> str:
+    for letter_index in range(len(example.choices)):
+        letter = chr(ord("A") + letter_index)
+        if letter != example.answer_letter:
+            return letter
+    return example.answer_letter
+
+
+def _format_qwen_messages(messages: list[dict[str, object]]) -> list[dict[str, Any]]:
+    formatted: list[dict[str, Any]] = []
+    for message in messages:
+        content = message.get("content", [])
+        converted_content: list[dict[str, Any]] = []
+        for block in content:
+            if not isinstance(block, dict):
+                continue
+            block_type = block.get("type")
+            if block_type == "text":
+                converted_content.append({"type": "text", "text": str(block.get("text", ""))})
+            elif block_type == "image":
+                image_path = str(block.get("image", ""))
+                if image_path:
+                    converted_content.append({"type": "image", "image": image_path})
+            elif block_type == "video":
+                video_path = str(block.get("video", ""))
+                if video_path:
+                    video_block: dict[str, Any] = {"type": "video", "video": video_path}
+                    if "fps" in block and block.get("fps") is not None:
+                        video_block["fps"] = float(block["fps"])
+                    if "max_frames" in block and block.get("max_frames") is not None:
+                        video_block["max_frames"] = int(block["max_frames"])
+                    if "nframes" in block and block.get("nframes") is not None:
+                        video_block["nframes"] = int(block["nframes"])
+                    converted_content.append(video_block)
+        formatted.append(
+            {
+                "role": str(message.get("role", "user")),
+                "content": converted_content,
+            }
+        )
+    return formatted
+
+
+def _format_internvl_messages(messages: list[dict[str, object]]) -> list[dict[str, Any]]:
+    formatted: list[dict[str, Any]] = []
+    for message in messages:
+        content = message.get("content", [])
+        converted_content: list[dict[str, Any]] = []
+        for block in content:
+            if not isinstance(block, dict):
+                continue
+            block_type = block.get("type")
+            if block_type == "text":
+                converted_content.append({"type": "text", "text": str(block.get("text", ""))})
+            elif block_type == "image":
+                image_path = str(block.get("image", ""))
+                if image_path:
+                    converted_content.append({"type": "image", "image": str(Path(image_path).resolve())})
+        formatted.append(
+            {
+                "role": str(message.get("role", "user")),
+                "content": converted_content,
+            }
+        )
+    return formatted
+
+
+def _collect_image_paths(messages: list[dict[str, Any]]) -> list[str]:
+    images: list[str] = []
+    for message in messages:
+        content = message.get("content", [])
+        if not isinstance(content, list):
+            continue
+        for block in content:
+            if isinstance(block, dict) and block.get("type") == "image":
+                image_path = str(block.get("image", ""))
+                if image_path:
+                    images.append(image_path)
+    return images
+
+
+def _collect_internvl_image_inputs(messages: list[dict[str, object]]) -> list[Any]:
+    from PIL import Image
+
+    images: list[Any] = []
+    for message in messages:
+        content = message.get("content", [])
+        if not isinstance(content, list):
+            continue
+        for block in content:
+            if not isinstance(block, dict):
+                continue
+            if block.get("type") == "image":
+                image_path = str(block.get("image", "")).strip()
+                if image_path:
+                    images.append(Image.open(image_path).convert("RGB"))
+            elif block.get("type") == "video":
+                video_path = str(block.get("video", "")).strip()
+                if not video_path:
+                    continue
+                fps = block.get("fps")
+                max_frames = block.get("max_frames")
+                nframes = block.get("nframes")
+                images.extend(
+                    _decode_video_frames_for_internvl(
+                        video_path=video_path,
+                        fps=float(fps) if fps is not None else None,
+                        max_frames=int(max_frames) if max_frames is not None else None,
+                        nframes=int(nframes) if nframes is not None else None,
+                    )
+                )
+    return images
+
+
+def _prepare_internvl_messages_and_images(
+    messages: list[dict[str, object]],
+) -> tuple[list[dict[str, Any]], list[Any]]:
+    from PIL import Image
+
+    formatted: list[dict[str, Any]] = []
+    images: list[Any] = []
+    for message in messages:
+        content = message.get("content", [])
+        converted_content: list[dict[str, Any]] = []
+        if not isinstance(content, list):
+            formatted.append({"role": str(message.get("role", "user")), "content": converted_content})
+            continue
+        for block in content:
+            if not isinstance(block, dict):
+                continue
+            block_type = block.get("type")
+            if block_type == "text":
+                converted_content.append({"type": "text", "text": str(block.get("text", ""))})
+            elif block_type == "image":
+                image_path = str(block.get("image", "")).strip()
+                if image_path:
+                    images.append(Image.open(image_path).convert("RGB"))
+                    # Placeholder used by InternVL chat template; processor consumes real image tensors.
+                    converted_content.append({"type": "image", "image": "<image>"})
+            elif block_type == "video":
+                video_path = str(block.get("video", "")).strip()
+                if not video_path:
+                    continue
+                decoded_frames = _decode_video_frames_for_internvl(
+                    video_path=video_path,
+                    fps=float(block["fps"]) if block.get("fps") is not None else None,
+                    max_frames=int(block["max_frames"]) if block.get("max_frames") is not None else None,
+                    nframes=int(block["nframes"]) if block.get("nframes") is not None else None,
+                )
+                if decoded_frames:
+                    images.extend(decoded_frames)
+                    converted_content.extend({"type": "image", "image": "<image>"} for _ in decoded_frames)
+        formatted.append({"role": str(message.get("role", "user")), "content": converted_content})
+    return formatted, images
+
+
+def _decode_video_frames_for_internvl(
+    *,
+    video_path: str,
+    fps: float | None,
+    max_frames: int | None,
+    nframes: int | None,
+) -> list[Any]:
+    from PIL import Image
+
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        return []
+
+    native_fps = cap.get(cv2.CAP_PROP_FPS) or 0.0
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
+    if total_frames <= 0:
+        cap.release()
+        return []
+
+    target_count = nframes if nframes and nframes > 0 else None
+    if target_count is None and fps and fps > 0 and native_fps > 0:
+        duration_sec = total_frames / native_fps
+        target_count = max(1, int(duration_sec * fps))
+    if target_count is None:
+        target_count = 8
+    if max_frames and max_frames > 0:
+        target_count = min(target_count, max_frames)
+    target_count = max(1, min(target_count, total_frames))
+
+    if target_count == 1:
+        indices = [0]
+    else:
+        step = (total_frames - 1) / float(target_count - 1)
+        indices = [int(round(i * step)) for i in range(target_count)]
+
+    decoded: list[Any] = []
+    for idx in indices:
+        cap.set(cv2.CAP_PROP_POS_FRAMES, float(idx))
+        ok, frame = cap.read()
+        if not ok:
+            continue
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        decoded.append(Image.fromarray(rgb))
+    cap.release()
+    return decoded
+
+
+def _qwen_state_cache_key(state: ConversationState) -> str:
+    return f"{state.example.question_id}:{state.strategy}"
+
+
+def _image_path_to_data_url(image_path: str) -> str:
+    path = Path(image_path).expanduser().resolve()
+    ext = path.suffix.lower()
+    mime = "image/jpeg"
+    if ext == ".png":
+        mime = "image/png"
+    elif ext == ".webp":
+        mime = "image/webp"
+    elif ext == ".gif":
+        mime = "image/gif"
+    data = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:{mime};base64,{data}"
+
+
+def _guess_image_mime_type(image_path: str) -> str:
+    ext = Path(image_path).suffix.lower()
+    if ext == ".png":
+        return "image/png"
+    if ext == ".webp":
+        return "image/webp"
+    if ext == ".gif":
+        return "image/gif"
+    return "image/jpeg"
+
+
+def _looks_like_complete_structured_answer(text: str) -> bool:
+    upper = text.upper()
+    if "ANSWER:" not in upper:
+        return False
+    if "CONFIDENCE:" not in upper:
+        return False
+    if "RATIONALE:" not in upper:
+        return False
+    # Require at least one digit after CONFIDENCE:
+    confidence_tail = upper.split("CONFIDENCE:", 1)[1]
+    if not any(ch.isdigit() for ch in confidence_tail[:12]):
+        return False
+    return True
+
+
+def _bgr_frame_to_jpeg_data_url(frame: Any) -> str:
+    ok, encoded = cv2.imencode(".jpg", frame)
+    if not ok:
+        raise RuntimeError("Failed to encode video frame as JPEG.")
+    data = base64.b64encode(encoded.tobytes()).decode("ascii")
+    return f"data:image/jpeg;base64,{data}"
+
+
+def _video_to_frame_data_urls(
+    *,
+    video_path: str,
+    fps: float | None,
+    max_frames: int | None,
+    nframes: int | None,
+) -> list[str]:
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        return []
+
+    native_fps = cap.get(cv2.CAP_PROP_FPS) or 0.0
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
+    if total_frames <= 0:
+        cap.release()
+        return []
+
+    target_count = nframes if nframes and nframes > 0 else None
+    if target_count is None and fps and fps > 0 and native_fps > 0:
+        duration_sec = total_frames / native_fps
+        target_count = max(1, int(duration_sec * fps))
+    if target_count is None:
+        target_count = 8
+    if max_frames and max_frames > 0:
+        target_count = min(target_count, max_frames)
+    target_count = max(1, min(target_count, total_frames))
+
+    if target_count == 1:
+        indices = [0]
+    else:
+        step = (total_frames - 1) / float(target_count - 1)
+        indices = [int(round(i * step)) for i in range(target_count)]
+
+    data_urls: list[str] = []
+    for idx in indices:
+        cap.set(cv2.CAP_PROP_POS_FRAMES, float(idx))
+        ok, frame = cap.read()
+        if not ok:
+            continue
+        data_urls.append(_bgr_frame_to_jpeg_data_url(frame))
+    cap.release()
+    return data_urls
+
+
+def _format_openai_compatible_messages(messages: list[dict[str, object]]) -> list[dict[str, Any]]:
+    formatted: list[dict[str, Any]] = []
+    for message in messages:
+        role = str(message.get("role", "user"))
+        content = message.get("content", [])
+        if not isinstance(content, list):
+            formatted.append({"role": role, "content": str(content)})
+            continue
+
+        converted_content: list[dict[str, Any]] = []
+        for block in content:
+            if not isinstance(block, dict):
+                continue
+            block_type = block.get("type")
+            if block_type == "text":
+                converted_content.append({"type": "text", "text": str(block.get("text", ""))})
+            elif block_type == "image":
+                image_path = str(block.get("image", "")).strip()
+                if image_path:
+                    converted_content.append(
+                        {
+                            "type": "image_url",
+                            "image_url": {"url": _image_path_to_data_url(image_path)},
+                        }
+                    )
+            elif block_type == "video":
+                video_path = str(block.get("video", "")).strip()
+                if not video_path:
+                    continue
+                fps = block.get("fps")
+                max_frames = block.get("max_frames")
+                nframes = block.get("nframes")
+                data_urls = _video_to_frame_data_urls(
+                    video_path=video_path,
+                    fps=float(fps) if fps is not None else None,
+                    max_frames=int(max_frames) if max_frames is not None else None,
+                    nframes=int(nframes) if nframes is not None else None,
+                )
+                converted_content.extend(
+                    {"type": "image_url", "image_url": {"url": data_url}}
+                    for data_url in data_urls
+                )
+        formatted.append({"role": role, "content": converted_content})
+    return formatted
+

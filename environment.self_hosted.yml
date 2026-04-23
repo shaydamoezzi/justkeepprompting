@@ -1,0 +1,13 @@
+name: jkp-selfhosted
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - sqlite
+  - ffmpeg
+  - numpy<3
+  - pillow
+  - pyyaml
+  - tqdm
+  - git

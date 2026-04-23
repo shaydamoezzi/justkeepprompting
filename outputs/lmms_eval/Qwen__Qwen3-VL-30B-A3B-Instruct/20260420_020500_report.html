@@ -1,0 +1,1987 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JKP STAR Negation - Qwen3-VL-30B (limit 10)</title>
+  <style>
+    body { font-family: Inter, Arial, sans-serif; margin: 0; background: #0f172a; color: #e2e8f0; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    h1, h2, h3 { margin: 0 0 12px 0; }
+    .summary { background: #111827; border: 1px solid #374151; border-radius: 10px; padding: 16px; margin-bottom: 20px; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+    .metric { background: #1f2937; border-radius: 8px; padding: 10px; }
+    .card { background: #111827; border: 1px solid #374151; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
+    .video-block { margin: 10px 0 14px; }
+    video { width: 100%; max-height: 420px; background: #000; border-radius: 8px; margin-top: 8px; }
+    details { margin: 8px 0; }
+    summary { cursor: pointer; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { border: 1px solid #374151; padding: 8px; vertical-align: top; text-align: left; }
+    th { background: #1f2937; }
+    .grid { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+    .mono, pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .mono, pre { background: #020617; border: 1px solid #334155; border-radius: 8px; padding: 10px; overflow-x: auto; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>JKP STAR Negation - Qwen3-VL-30B (limit 10)</h1>
+    <div class="summary">
+      <h2>Run Summary</h2>
+      <div class="metrics">
+        <div class="metric"><strong>Model</strong><br>pretrained=Qwen/Qwen3-VL-30B-A3B-Instruct,device_map=auto,torch_dtype=float16,max_num_frames=8,fps=1,attn_implementation=sdpa</div>
+        <div class="metric"><strong>Limit</strong><br>10.0</div>
+        <div class="metric"><strong>Final Acc</strong><br>0.3</div>
+        <div class="metric"><strong>Initial Acc</strong><br>0.4</div>
+        <div class="metric"><strong>Flip Rate</strong><br>1.0</div>
+        <div class="metric"><strong>Total Tokens</strong><br>5110</div>
+        <div class="metric"><strong>Total Gen Time (s)</strong><br>1035.23</div>
+        <div class="metric"><strong>Avg Speed (tok/s)</strong><br>4.936</div>
+      </div>
+    </div>
+    
+            <section class="card">
+              <h3>#1: Feasibility_T2_10</h3>
+              <div class="meta">
+                <span><strong>Target:</strong> B</span>
+                <span><strong>Initial acc:</strong> 1.0</span>
+                <span><strong>Final acc:</strong> 0.0</span>
+                <span><strong>Flip rate:</strong> 1.0</span>
+              </div>
+              
+            <div class="video-block">
+              <div><strong>Video:</strong> <code>/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_10.mp4</code></div>
+              <video controls preload="metadata" src="/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_10.mp4"></video>
+            </div>
+            
+              <details open>
+                <summary>Per-turn trace</summary>
+                <table>
+                  <thead><tr><th>Turn</th><th>Choice</th><th>Conf</th><th>Raw Text</th></tr></thead>
+                  <tbody>
+                    <tr><td>0</td><td>B</td><td>85</td><td>ANSWER: B. Take the dish.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen holding a dish in their hand, and the natural next action would be to take the dish, as they are already in the process of handling it. The other options are less likely given the context of the video.</td></tr><tr><td>1</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>2</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>3</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>4</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>5</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>6</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>7</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>8</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>9</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>10</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <details>
+                <summary>Agentic rounds (input/output)</summary>
+                
+                <details class="round">
+                  <summary>Round 1 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">Analyze the video and answer the multiple-choice question.<br>Use only evidence from the video.<br>Return exactly this format:<br>ANSWER: &lt;single letter&gt;<br>CONFIDENCE: &lt;0-100&gt;<br>RATIONALE: &lt;short paragraph&gt;<br><br>Question: What else is the person able to do with the dish?<br>Options:<br>A. Put down the dish.<br>B. Take the dish.<br>C. Eat the dish.<br>D. Hold the dish.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">ANSWER: B. Take the dish.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen holding a dish in their hand, and the natural next action would be to take the dish, as they are already in the process of handling it. The other options are less likely given the context of the video.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 2 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 3 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 4 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 5 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 6 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 7 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 8 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 9 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 10 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 11 (terminal)</summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+              </details>
+              <details>
+                <summary>Sample metrics JSON</summary>
+                <pre>{
+  &quot;initial_correct&quot;: 1.0,
+  &quot;final_correct&quot;: 0.0,
+  &quot;flip_rate&quot;: 1.0,
+  &quot;number_of_flips&quot;: 0.0,
+  &quot;turn_of_first_change&quot;: 1,
+  &quot;turn_of_first_incorrect&quot;: 1
+}</pre>
+              </details>
+            </section>
+            
+            <section class="card">
+              <h3>#2: Feasibility_T2_1027</h3>
+              <div class="meta">
+                <span><strong>Target:</strong> A</span>
+                <span><strong>Initial acc:</strong> 1.0</span>
+                <span><strong>Final acc:</strong> 1.0</span>
+                <span><strong>Flip rate:</strong> 1.0</span>
+              </div>
+              
+            <div class="video-block">
+              <div><strong>Video:</strong> <code>/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1027.mp4</code></div>
+              <video controls preload="metadata" src="/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1027.mp4"></video>
+            </div>
+            
+              <details open>
+                <summary>Per-turn trace</summary>
+                <table>
+                  <thead><tr><th>Turn</th><th>Choice</th><th>Conf</th><th>Raw Text</th></tr></thead>
+                  <tbody>
+                    <tr><td>0</td><td>A</td><td>85</td><td>ANSWER: A. Close the door.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen opening the door, which implies they have the ability to close it as well. The video shows the door being opened, and there is no indication that the person is unable to close it. Therefore, the most logical inference is that the person can also close the door.</td></tr><tr><td>1</td><td>A</td><td>-</td><td>A man is standing in a room, holding a white pillow. He is wearing a dark shirt and pants. He moves the pillow from his right side to his left side, then back to his right side. He then turns and walks towards the door, still holding the pillow. He opens the door and exits the room.</td></tr><tr><td>2</td><td>A</td><td>-</td><td>A man is standing in a room, holding a white pillow. He is wearing a dark shirt and pants. He moves the pillow from his left hand to his right hand. There is a mirror on the wall behind him, and a door to his right. A laptop is on a table to the right of the door.</td></tr><tr><td>3</td><td>A</td><td>-</td><td>A man is standing in a room, holding a white pillow. He is wearing a dark shirt and pants. He moves the pillow from his left hand to his right hand. There is a mirror on the wall behind him, reflecting his image. To the right, there is a desk with a laptop and some other items on it. The room has a door that is slightly ajar. The man appears to be in a casual setting, possibly a bedroom or a small living space.</td></tr><tr><td>4</td><td>A</td><td>-</td><td>A man is standing in a room, holding a white pillow. He is wearing a dark shirt and pants. He moves the pillow from his left hand to his right hand, then back to his left hand. He then turns and walks towards the door, still holding the pillow. He opens the door and exits the room.</td></tr><tr><td>5</td><td>A</td><td>-</td><td>A man is standing in a room, holding a white pillow. He is wearing a dark shirt and pants. He moves the pillow around in front of him, then turns and walks towards a door. He opens the door and continues to hold the pillow as he exits the room.</td></tr><tr><td>6</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>7</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>8</td><td>A</td><td>-</td><td>A man is holding a white pillow in a room with pink walls. He is standing near a mirror and a door. There is a laptop on a table to the right. The man is wearing a dark shirt and pants. He appears to be moving the pillow around.</td></tr><tr><td>9</td><td>A</td><td>-</td><td>A man is holding a white pillow in a room with pink walls. He is standing near a mirror and a door. There is a laptop on a table to the right. The man is wearing a dark shirt and pants. He moves the pillow slightly as he stands in the room.</td></tr><tr><td>10</td><td>A</td><td>-</td><td>A man is holding a white pillow in a room with a mirror and a door.</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <details>
+                <summary>Agentic rounds (input/output)</summary>
+                
+                <details class="round">
+                  <summary>Round 1 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">Analyze the video and answer the multiple-choice question.<br>Use only evidence from the video.<br>Return exactly this format:<br>ANSWER: &lt;single letter&gt;<br>CONFIDENCE: &lt;0-100&gt;<br>RATIONALE: &lt;short paragraph&gt;<br><br>Question: What else is the person able to do with the door?<br>Options:<br>A. Close the door.<br>B. Wash the door.<br>C. Open the door.<br>D. Take the door.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">ANSWER: A. Close the door.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen opening the door, which implies they have the ability to close it as well. The video shows the door being opened, and there is no indication that the person is unable to close it. Therefore, the most logical inference is that the person can also close the door.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 2 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man is standing in a room, holding a white pillow. He is wearing a dark shirt and pants. He moves the pillow from his right side to his left side, then back to his right side. He then turns and walks towards the door, still holding the pillow. He opens the door and exits the room.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 3 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man is standing in a room, holding a white pillow. He is wearing a dark shirt and pants. He moves the pillow from his left hand to his right hand. There is a mirror on the wall behind him, and a door to his right. A laptop is on a table to the right of the door.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 4 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man is standing in a room, holding a white pillow. He is wearing a dark shirt and pants. He moves the pillow from his left hand to his right hand. There is a mirror on the wall behind him, reflecting his image. To the right, there is a desk with a laptop and some other items on it. The room has a door that is slightly ajar. The man appears to be in a casual setting, possibly a bedroom or a small living space.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 5 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man is standing in a room, holding a white pillow. He is wearing a dark shirt and pants. He moves the pillow from his left hand to his right hand, then back to his left hand. He then turns and walks towards the door, still holding the pillow. He opens the door and exits the room.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 6 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man is standing in a room, holding a white pillow. He is wearing a dark shirt and pants. He moves the pillow around in front of him, then turns and walks towards a door. He opens the door and continues to hold the pillow as he exits the room.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 7 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 8 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 9 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man is holding a white pillow in a room with pink walls. He is standing near a mirror and a door. There is a laptop on a table to the right. The man is wearing a dark shirt and pants. He appears to be moving the pillow around.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 10 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man is holding a white pillow in a room with pink walls. He is standing near a mirror and a door. There is a laptop on a table to the right. The man is wearing a dark shirt and pants. He moves the pillow slightly as he stands in the room.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 11 (terminal)</summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man is holding a white pillow in a room with a mirror and a door.</div>
+                    </div>
+                  </div>
+                </details>
+                
+              </details>
+              <details>
+                <summary>Sample metrics JSON</summary>
+                <pre>{
+  &quot;initial_correct&quot;: 1.0,
+  &quot;final_correct&quot;: 1.0,
+  &quot;flip_rate&quot;: 1.0,
+  &quot;number_of_flips&quot;: 0.0,
+  &quot;turn_of_first_change&quot;: 6,
+  &quot;turn_of_first_incorrect&quot;: 6
+}</pre>
+              </details>
+            </section>
+            
+            <section class="card">
+              <h3>#3: Feasibility_T2_1034</h3>
+              <div class="meta">
+                <span><strong>Target:</strong> B</span>
+                <span><strong>Initial acc:</strong> 0.0</span>
+                <span><strong>Final acc:</strong> 0.0</span>
+                <span><strong>Flip rate:</strong> 1.0</span>
+              </div>
+              
+            <div class="video-block">
+              <div><strong>Video:</strong> <code>/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1034.mp4</code></div>
+              <video controls preload="metadata" src="/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1034.mp4"></video>
+            </div>
+            
+              <details open>
+                <summary>Per-turn trace</summary>
+                <table>
+                  <thead><tr><th>Turn</th><th>Choice</th><th>Conf</th><th>Raw Text</th></tr></thead>
+                  <tbody>
+                    <tr><td>0</td><td>D</td><td>85</td><td>ANSWER: D. Tidy up the clothes.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen holding the clothes in a manner that suggests they are organizing or preparing to fold them, which aligns with the action of tidying up. While they could potentially wash or hold the clothes, the context of the scene and the way the clothes are handled most strongly supports the idea of tidying up.</td></tr><tr><td>1</td><td>-</td><td>-</td><td>&lt;0.8 seconds&gt;</td></tr><tr><td>2</td><td>-</td><td>-</td><td>&lt;0.8 seconds&gt;</td></tr><tr><td>3</td><td>-</td><td>-</td><td>&lt;0.8 seconds&gt;</td></tr><tr><td>4</td><td>-</td><td>-</td><td>&lt;0.8 seconds&gt;</td></tr><tr><td>5</td><td>-</td><td>-</td><td>&lt;0.8 seconds&gt;</td></tr><tr><td>6</td><td>-</td><td>-</td><td>&lt;0.8 seconds&gt;</td></tr><tr><td>7</td><td>-</td><td>-</td><td>&lt;0.8 seconds&gt;</td></tr><tr><td>8</td><td>-</td><td>-</td><td>&lt;0.8 seconds&gt;</td></tr><tr><td>9</td><td>-</td><td>-</td><td>&lt;0.8 seconds&gt;</td></tr><tr><td>10</td><td>-</td><td>-</td><td>&lt;0.8 seconds&gt;</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <details>
+                <summary>Agentic rounds (input/output)</summary>
+                
+                <details class="round">
+                  <summary>Round 1 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">Analyze the video and answer the multiple-choice question.<br>Use only evidence from the video.<br>Return exactly this format:<br>ANSWER: &lt;single letter&gt;<br>CONFIDENCE: &lt;0-100&gt;<br>RATIONALE: &lt;short paragraph&gt;<br><br>Question: What else is the person able to do with the clothes?<br>Options:<br>A. Sit on the clothes.<br>B. Wash the clothes.<br>C. Hold the clothes.<br>D. Tidy up the clothes.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">ANSWER: D. Tidy up the clothes.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen holding the clothes in a manner that suggests they are organizing or preparing to fold them, which aligns with the action of tidying up. While they could potentially wash or hold the clothes, the context of the scene and the way the clothes are handled most strongly supports the idea of tidying up.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 2 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 3 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 4 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 5 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 6 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 7 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 8 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 9 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 10 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 11 (terminal)</summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+              </details>
+              <details>
+                <summary>Sample metrics JSON</summary>
+                <pre>{
+  &quot;initial_correct&quot;: 0.0,
+  &quot;final_correct&quot;: 0.0,
+  &quot;flip_rate&quot;: 1.0,
+  &quot;number_of_flips&quot;: 0.0,
+  &quot;turn_of_first_change&quot;: 1,
+  &quot;turn_of_first_incorrect&quot;: null
+}</pre>
+              </details>
+            </section>
+            
+            <section class="card">
+              <h3>#4: Feasibility_T2_1046</h3>
+              <div class="meta">
+                <span><strong>Target:</strong> C</span>
+                <span><strong>Initial acc:</strong> 0.0</span>
+                <span><strong>Final acc:</strong> 0.0</span>
+                <span><strong>Flip rate:</strong> 1.0</span>
+              </div>
+              
+            <div class="video-block">
+              <div><strong>Video:</strong> <code>/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1046.mp4</code></div>
+              <video controls preload="metadata" src="/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1046.mp4"></video>
+            </div>
+            
+              <details open>
+                <summary>Per-turn trace</summary>
+                <table>
+                  <thead><tr><th>Turn</th><th>Choice</th><th>Conf</th><th>Raw Text</th></tr></thead>
+                  <tbody>
+                    <tr><td>0</td><td>D</td><td>85</td><td>ANSWER: D. Throw the blanket.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen holding the blanket and then moving it in a motion that suggests throwing it. The action of throwing is consistent with the movement observed in the video.</td></tr><tr><td>1</td><td>A</td><td>-</td><td>A woman in a black outfit is standing in a laundry room. She bends down and picks up a white towel from the floor. She then stands up and holds the towel in her hands.</td></tr><tr><td>2</td><td>A</td><td>-</td><td>A woman in a black outfit is standing in a laundry room. She bends down and picks up a white towel from the floor. She then stands up and holds the towel in her hands.</td></tr><tr><td>3</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;0.7<br>&lt;2.5 seconds&gt;2.5<br>&lt;4.3 seconds&gt;4.3<br>&lt;6.0 seconds&gt;6.0</td></tr><tr><td>4</td><td>A</td><td>-</td><td>A woman in a black outfit is standing in a laundry room. She bends down and picks up a white towel from the floor. She then stands up and holds the towel in her hands. The room has a washing machine, a dryer, and shelves with cleaning supplies. The woman appears to be preparing to do laundry.</td></tr><tr><td>5</td><td>A</td><td>-</td><td>A woman in a black outfit is standing in a laundry room. She bends down and picks up a pair of black pants from the floor. She then stands up and holds the pants in her hands.</td></tr><tr><td>6</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;0.7<br>&lt;3.3 seconds&gt;3.3<br>&lt;6.0 seconds&gt;6.0</td></tr><tr><td>7</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;0.7<br>&lt;3.3 seconds&gt;3.3<br>&lt;6.0 seconds&gt;6.0</td></tr><tr><td>8</td><td>A</td><td>-</td><td>A woman in a black outfit is standing in a laundry room. She bends down and picks up a white towel from the floor. She then stands up, holding the towel in her hands.</td></tr><tr><td>9</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;0.7<br>&lt;3.3 seconds&gt;3.3<br>&lt;6.0 seconds&gt;6.0</td></tr><tr><td>10</td><td>A</td><td>-</td><td>A woman in a black outfit stands in a laundry room. She bends down and picks up a white towel from the floor. She then stands up, holding the towel.</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <details>
+                <summary>Agentic rounds (input/output)</summary>
+                
+                <details class="round">
+                  <summary>Round 1 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">Analyze the video and answer the multiple-choice question.<br>Use only evidence from the video.<br>Return exactly this format:<br>ANSWER: &lt;single letter&gt;<br>CONFIDENCE: &lt;0-100&gt;<br>RATIONALE: &lt;short paragraph&gt;<br><br>Question: What else is the person able to do with the blanket?<br>Options:<br>A. Close the blanket.<br>B. Take the blanket.<br>C. Put down the blanket.<br>D. Throw the blanket.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">ANSWER: D. Throw the blanket.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen holding the blanket and then moving it in a motion that suggests throwing it. The action of throwing is consistent with the movement observed in the video.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 2 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A woman in a black outfit is standing in a laundry room. She bends down and picks up a white towel from the floor. She then stands up and holds the towel in her hands.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 3 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A woman in a black outfit is standing in a laundry room. She bends down and picks up a white towel from the floor. She then stands up and holds the towel in her hands.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 4 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;0.7<br>&lt;2.5 seconds&gt;2.5<br>&lt;4.3 seconds&gt;4.3<br>&lt;6.0 seconds&gt;6.0</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 5 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A woman in a black outfit is standing in a laundry room. She bends down and picks up a white towel from the floor. She then stands up and holds the towel in her hands. The room has a washing machine, a dryer, and shelves with cleaning supplies. The woman appears to be preparing to do laundry.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 6 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A woman in a black outfit is standing in a laundry room. She bends down and picks up a pair of black pants from the floor. She then stands up and holds the pants in her hands.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 7 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;0.7<br>&lt;3.3 seconds&gt;3.3<br>&lt;6.0 seconds&gt;6.0</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 8 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;0.7<br>&lt;3.3 seconds&gt;3.3<br>&lt;6.0 seconds&gt;6.0</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 9 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A woman in a black outfit is standing in a laundry room. She bends down and picks up a white towel from the floor. She then stands up, holding the towel in her hands.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 10 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;0.7<br>&lt;3.3 seconds&gt;3.3<br>&lt;6.0 seconds&gt;6.0</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 11 (terminal)</summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A woman in a black outfit stands in a laundry room. She bends down and picks up a white towel from the floor. She then stands up, holding the towel.</div>
+                    </div>
+                  </div>
+                </details>
+                
+              </details>
+              <details>
+                <summary>Sample metrics JSON</summary>
+                <pre>{
+  &quot;initial_correct&quot;: 0.0,
+  &quot;final_correct&quot;: 0.0,
+  &quot;flip_rate&quot;: 1.0,
+  &quot;number_of_flips&quot;: 1.0,
+  &quot;turn_of_first_change&quot;: 1,
+  &quot;turn_of_first_incorrect&quot;: null
+}</pre>
+              </details>
+            </section>
+            
+            <section class="card">
+              <h3>#5: Feasibility_T2_1048</h3>
+              <div class="meta">
+                <span><strong>Target:</strong> A</span>
+                <span><strong>Initial acc:</strong> 0.0</span>
+                <span><strong>Final acc:</strong> 1.0</span>
+                <span><strong>Flip rate:</strong> 1.0</span>
+              </div>
+              
+            <div class="video-block">
+              <div><strong>Video:</strong> <code>/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1048.mp4</code></div>
+              <video controls preload="metadata" src="/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1048.mp4"></video>
+            </div>
+            
+              <details open>
+                <summary>Per-turn trace</summary>
+                <table>
+                  <thead><tr><th>Turn</th><th>Choice</th><th>Conf</th><th>Raw Text</th></tr></thead>
+                  <tbody>
+                    <tr><td>0</td><td>B</td><td>85</td><td>ANSWER: B. Wash the blanket.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen placing the blanket into a washing machine, which indicates that they are able to wash the blanket. This action directly supports the option that they can wash the blanket.</td></tr><tr><td>1</td><td>A</td><td>-</td><td>A person is standing in a laundry room, holding a white towel. They are wearing a black long-sleeved shirt and black shorts. The person is bending over and appears to be putting the towel into a washing machine. The washing machine is white and has a circular door. There are various cleaning supplies on a shelf above the washing machine. The room has a concrete floor and white walls. The person is standing in front of the washing machine, and their back is facing the camera. The person is holding the towel with both hands and is in the process of placing it into the washing machine. The person is wearing black shoes. The person is standing in front of the washing machine, and their back is facing the camera. The person is holding the towel with both hands and is in the process of placing it into the washing machine. The person is wearing black shoes.</td></tr><tr><td>2</td><td>A</td><td>-</td><td>A person is standing in a laundry room, holding a white towel. They are wearing a black long-sleeved shirt and black shorts. The person is standing in front of a white washing machine with the door open. There is a shelf above the washing machine with various cleaning supplies. The person is holding the towel with both hands and appears to be preparing to put it in the washing machine. The room has a concrete floor and white walls. There is a red bucket on the floor to the left of the washing machine. The person is standing with their back to the camera.</td></tr><tr><td>3</td><td>A</td><td>-</td><td>A person is standing in a laundry room, holding a white towel. They are wearing a black long-sleeved shirt and black shorts. The person is bending over and appears to be putting the towel into a white washing machine. The washing machine door is open, and there are clothes inside. The room has a white shelf with various cleaning supplies and bottles on it. There is also a red bucket on the floor to the left. The person is standing in front of the washing machine, and the room has a concrete floor and white walls. The person is not wearing any shoes.</td></tr><tr><td>4</td><td>A</td><td>-</td><td>A person is standing in a laundry room, holding a white towel. They are wearing a black long-sleeved shirt and black shorts. The person is standing in front of a white washing machine with the door open. There is a shelf above the washing machine with various cleaning supplies. The person is holding the towel with both hands and appears to be preparing to put it in the washing machine. The room has a concrete floor and white walls. There is a red bucket on the floor to the left of the washing machine. The person is standing with their back to the camera.</td></tr><tr><td>5</td><td>A</td><td>-</td><td>A person is standing in a laundry room, holding a white towel. They are wearing a black long-sleeved shirt and black shorts. The person is bending over and appears to be putting the towel into a washing machine. The washing machine is white and has a circular door. There are various cleaning supplies on a shelf above the washing machine. The room has a concrete floor and white walls. There is a red bucket on the floor to the left. The person is standing in front of the washing machine, which is on the right side of the frame. The person is facing the washing machine and is in the process of loading it. The person is wearing black shoes. The person is holding the towel with both hands. The person is standing upright and then bends over to place the towel into the washing machine. The person is standing in front of the washing machine, which is on the right side of the frame. The person is facing the washing machine and is in the process of loading it. The person is wearing black shoes. The person is holding the towel with both hands. The person is standing upright and then bends over to place the towel into the washing machine.</td></tr><tr><td>6</td><td>A</td><td>-</td><td>A person in a black outfit is seen in a laundry room, bending over and handling a white garment. The individual appears to be placing or removing clothes from a washing machine. The room has a white washing machine and dryer, with various cleaning supplies on a shelf above. The person is standing near the washing machine, which has its door open, and is actively engaged in the task of loading or unloading laundry. The person is wearing black shoes and has their hair tied back. The lighting in the room is dim, and the walls are painted white. The person is positioned in front of the washing machine, facing it, and is using both hands to manage the laundry. The person is not wearing a hat or a jacket. The person is not holding a phone or a book. The person is not wearing a hat or a jacket. The person is not holding a phone or a book. The person is not wearing a hat or a jacket. The person is not holding a phone or a book.</td></tr><tr><td>7</td><td>A</td><td>-</td><td>A person is standing in a laundry room, bending over and placing a white towel into a white washing machine. The washing machine is on the right side of the frame, and there is another washing machine to the left. The person is wearing a black long-sleeved shirt and black shorts. The room has a white brick wall and a shelf above the washing machines with various cleaning supplies. There are pipes running along the ceiling. The person is holding the towel with both hands and appears to be in the process of loading it into the washing machine.</td></tr><tr><td>8</td><td>A</td><td>-</td><td>A person in a dark outfit is seen in a laundry room, bending over and handling a white garment. They are standing next to a washing machine with its door open, placing the garment inside. The room has shelves with various cleaning supplies and a broom leaning against the wall. The person then closes the washing machine door and appears to be preparing to start the machine.</td></tr><tr><td>9</td><td>A</td><td>-</td><td>A person in a black outfit is standing in a laundry room, bending over and placing a white towel into a washing machine. The room has a white washing machine and dryer, with various cleaning supplies on a shelf above. The person is wearing black shoes and has a ponytail. The lighting is dim, and the walls are white. The person is facing the washing machine, and the towel is being placed inside. The person then stands up and closes the washing machine door.</td></tr><tr><td>10</td><td>A</td><td>-</td><td>A person in a dark outfit is seen in a laundry room, bending over and handling a white garment. The individual appears to be placing or removing clothes from a washing machine. The room has a shelf with various bottles and containers, and the washing machine is open, revealing clothes inside. The person moves the garment towards the washing machine, possibly preparing to load it. The scene is well-lit, and the person&#x27;s actions are focused on the laundry task.</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <details>
+                <summary>Agentic rounds (input/output)</summary>
+                
+                <details class="round">
+                  <summary>Round 1 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">Analyze the video and answer the multiple-choice question.<br>Use only evidence from the video.<br>Return exactly this format:<br>ANSWER: &lt;single letter&gt;<br>CONFIDENCE: &lt;0-100&gt;<br>RATIONALE: &lt;short paragraph&gt;<br><br>Question: What else is the person able to do with the blanket?<br>Options:<br>A. Put down the blanket.<br>B. Wash the blanket.<br>C. Hold the blanket.<br>D. Tidy up the blanket.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">ANSWER: B. Wash the blanket.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen placing the blanket into a washing machine, which indicates that they are able to wash the blanket. This action directly supports the option that they can wash the blanket.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 2 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A person is standing in a laundry room, holding a white towel. They are wearing a black long-sleeved shirt and black shorts. The person is bending over and appears to be putting the towel into a washing machine. The washing machine is white and has a circular door. There are various cleaning supplies on a shelf above the washing machine. The room has a concrete floor and white walls. The person is standing in front of the washing machine, and their back is facing the camera. The person is holding the towel with both hands and is in the process of placing it into the washing machine. The person is wearing black shoes. The person is standing in front of the washing machine, and their back is facing the camera. The person is holding the towel with both hands and is in the process of placing it into the washing machine. The person is wearing black shoes.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 3 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A person is standing in a laundry room, holding a white towel. They are wearing a black long-sleeved shirt and black shorts. The person is standing in front of a white washing machine with the door open. There is a shelf above the washing machine with various cleaning supplies. The person is holding the towel with both hands and appears to be preparing to put it in the washing machine. The room has a concrete floor and white walls. There is a red bucket on the floor to the left of the washing machine. The person is standing with their back to the camera.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 4 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A person is standing in a laundry room, holding a white towel. They are wearing a black long-sleeved shirt and black shorts. The person is bending over and appears to be putting the towel into a white washing machine. The washing machine door is open, and there are clothes inside. The room has a white shelf with various cleaning supplies and bottles on it. There is also a red bucket on the floor to the left. The person is standing in front of the washing machine, and the room has a concrete floor and white walls. The person is not wearing any shoes.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 5 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A person is standing in a laundry room, holding a white towel. They are wearing a black long-sleeved shirt and black shorts. The person is standing in front of a white washing machine with the door open. There is a shelf above the washing machine with various cleaning supplies. The person is holding the towel with both hands and appears to be preparing to put it in the washing machine. The room has a concrete floor and white walls. There is a red bucket on the floor to the left of the washing machine. The person is standing with their back to the camera.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 6 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A person is standing in a laundry room, holding a white towel. They are wearing a black long-sleeved shirt and black shorts. The person is bending over and appears to be putting the towel into a washing machine. The washing machine is white and has a circular door. There are various cleaning supplies on a shelf above the washing machine. The room has a concrete floor and white walls. There is a red bucket on the floor to the left. The person is standing in front of the washing machine, which is on the right side of the frame. The person is facing the washing machine and is in the process of loading it. The person is wearing black shoes. The person is holding the towel with both hands. The person is standing upright and then bends over to place the towel into the washing machine. The person is standing in front of the washing machine, which is on the right side of the frame. The person is facing the washing machine and is in the process of loading it. The person is wearing black shoes. The person is holding the towel with both hands. The person is standing upright and then bends over to place the towel into the washing machine.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 7 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A person in a black outfit is seen in a laundry room, bending over and handling a white garment. The individual appears to be placing or removing clothes from a washing machine. The room has a white washing machine and dryer, with various cleaning supplies on a shelf above. The person is standing near the washing machine, which has its door open, and is actively engaged in the task of loading or unloading laundry. The person is wearing black shoes and has their hair tied back. The lighting in the room is dim, and the walls are painted white. The person is positioned in front of the washing machine, facing it, and is using both hands to manage the laundry. The person is not wearing a hat or a jacket. The person is not holding a phone or a book. The person is not wearing a hat or a jacket. The person is not holding a phone or a book. The person is not wearing a hat or a jacket. The person is not holding a phone or a book.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 8 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A person is standing in a laundry room, bending over and placing a white towel into a white washing machine. The washing machine is on the right side of the frame, and there is another washing machine to the left. The person is wearing a black long-sleeved shirt and black shorts. The room has a white brick wall and a shelf above the washing machines with various cleaning supplies. There are pipes running along the ceiling. The person is holding the towel with both hands and appears to be in the process of loading it into the washing machine.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 9 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A person in a dark outfit is seen in a laundry room, bending over and handling a white garment. They are standing next to a washing machine with its door open, placing the garment inside. The room has shelves with various cleaning supplies and a broom leaning against the wall. The person then closes the washing machine door and appears to be preparing to start the machine.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 10 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A person in a black outfit is standing in a laundry room, bending over and placing a white towel into a washing machine. The room has a white washing machine and dryer, with various cleaning supplies on a shelf above. The person is wearing black shoes and has a ponytail. The lighting is dim, and the walls are white. The person is facing the washing machine, and the towel is being placed inside. The person then stands up and closes the washing machine door.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 11 (terminal)</summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A person in a dark outfit is seen in a laundry room, bending over and handling a white garment. The individual appears to be placing or removing clothes from a washing machine. The room has a shelf with various bottles and containers, and the washing machine is open, revealing clothes inside. The person moves the garment towards the washing machine, possibly preparing to load it. The scene is well-lit, and the person&#x27;s actions are focused on the laundry task.</div>
+                    </div>
+                  </div>
+                </details>
+                
+              </details>
+              <details>
+                <summary>Sample metrics JSON</summary>
+                <pre>{
+  &quot;initial_correct&quot;: 0.0,
+  &quot;final_correct&quot;: 1.0,
+  &quot;flip_rate&quot;: 1.0,
+  &quot;number_of_flips&quot;: 1.0,
+  &quot;turn_of_first_change&quot;: 1,
+  &quot;turn_of_first_incorrect&quot;: null
+}</pre>
+              </details>
+            </section>
+            
+            <section class="card">
+              <h3>#6: Feasibility_T2_107</h3>
+              <div class="meta">
+                <span><strong>Target:</strong> C</span>
+                <span><strong>Initial acc:</strong> 0.0</span>
+                <span><strong>Final acc:</strong> 0.0</span>
+                <span><strong>Flip rate:</strong> 1.0</span>
+              </div>
+              
+            <div class="video-block">
+              <div><strong>Video:</strong> <code>/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_107.mp4</code></div>
+              <video controls preload="metadata" src="/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_107.mp4"></video>
+            </div>
+            
+              <details open>
+                <summary>Per-turn trace</summary>
+                <table>
+                  <thead><tr><th>Turn</th><th>Choice</th><th>Conf</th><th>Raw Text</th></tr></thead>
+                  <tbody>
+                    <tr><td>0</td><td>D</td><td>95</td><td>ANSWER: D. Hold the food.<br>CONFIDENCE: 95<br>RATIONALE: The person is already holding the food in their hands, as seen in the video. This action is consistent with the ability to hold the food.</td></tr><tr><td>1</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>2</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>3</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>4</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>5</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>6</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>7</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>8</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>9</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr><tr><td>10</td><td>-</td><td>-</td><td>&lt;0.7 seconds&gt;</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <details>
+                <summary>Agentic rounds (input/output)</summary>
+                
+                <details class="round">
+                  <summary>Round 1 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">Analyze the video and answer the multiple-choice question.<br>Use only evidence from the video.<br>Return exactly this format:<br>ANSWER: &lt;single letter&gt;<br>CONFIDENCE: &lt;0-100&gt;<br>RATIONALE: &lt;short paragraph&gt;<br><br>Question: What else is the person able to do with the food?<br>Options:<br>A. Close the food.<br>B. Put down the food.<br>C. Take the food.<br>D. Hold the food.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">ANSWER: D. Hold the food.<br>CONFIDENCE: 95<br>RATIONALE: The person is already holding the food in their hands, as seen in the video. This action is consistent with the ability to hold the food.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 2 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 3 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 4 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 5 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 6 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 7 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 8 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 9 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 10 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 11 (terminal)</summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.7 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+              </details>
+              <details>
+                <summary>Sample metrics JSON</summary>
+                <pre>{
+  &quot;initial_correct&quot;: 0.0,
+  &quot;final_correct&quot;: 0.0,
+  &quot;flip_rate&quot;: 1.0,
+  &quot;number_of_flips&quot;: 0.0,
+  &quot;turn_of_first_change&quot;: 1,
+  &quot;turn_of_first_incorrect&quot;: null
+}</pre>
+              </details>
+            </section>
+            
+            <section class="card">
+              <h3>#7: Feasibility_T2_108</h3>
+              <div class="meta">
+                <span><strong>Target:</strong> A</span>
+                <span><strong>Initial acc:</strong> 0.0</span>
+                <span><strong>Final acc:</strong> 1.0</span>
+                <span><strong>Flip rate:</strong> 1.0</span>
+              </div>
+              
+            <div class="video-block">
+              <div><strong>Video:</strong> <code>/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_108.mp4</code></div>
+              <video controls preload="metadata" src="/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_108.mp4"></video>
+            </div>
+            
+              <details open>
+                <summary>Per-turn trace</summary>
+                <table>
+                  <thead><tr><th>Turn</th><th>Choice</th><th>Conf</th><th>Raw Text</th></tr></thead>
+                  <tbody>
+                    <tr><td>0</td><td>B</td><td>95</td><td>ANSWER: B. Hold the food.<br>CONFIDENCE: 95<br>RATIONALE: The person is seen holding the food in their hand, indicating they are able to hold it. The other options are not supported by the visual evidence in the video.</td></tr><tr><td>1</td><td>A</td><td>-</td><td>A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man sits at a desk in the background, working on a laptop. The man in the pink shirt turns to face the man at the desk.</td></tr><tr><td>2</td><td>A</td><td>-</td><td>A man in a pink shirt and brown pants sits on a red plastic chair in a room. Another man sits at a desk in the background, working on a laptop.</td></tr><tr><td>3</td><td>A</td><td>-</td><td>A man in a pink shirt sits on a red plastic chair in a room. Another person is seated at a desk in the background, working on a laptop.</td></tr><tr><td>4</td><td>A</td><td>-</td><td>A man in a pink shirt sits on a red plastic chair in a room with white walls. Another person is seated at a desk in the background, working on a laptop. The man in the pink shirt is facing the person at the desk.</td></tr><tr><td>5</td><td>A</td><td>-</td><td>A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man is seated at a desk in the background, working on a laptop. The man in the pink shirt is facing the man at the desk.</td></tr><tr><td>6</td><td>A</td><td>-</td><td>A man in a pink shirt and brown pants sits on a red plastic chair in a room. Another man sits at a desk in the background, working on a laptop.</td></tr><tr><td>7</td><td>A</td><td>-</td><td>A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man sits at a desk in the background, working on a laptop. The man in the pink shirt turns and sits down on the red chair.</td></tr><tr><td>8</td><td>A</td><td>-</td><td>A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man sits at a desk in the background, working on a laptop.</td></tr><tr><td>9</td><td>A</td><td>-</td><td>A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man sits at a desk in the background, working on a laptop. The man in the pink shirt turns and sits down on the red chair, facing the man at the desk.</td></tr><tr><td>10</td><td>A</td><td>-</td><td>A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man is seated at a desk in the background, working on a laptop. The man in the pink shirt turns and sits down on the red chair, facing the man at the desk.</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <details>
+                <summary>Agentic rounds (input/output)</summary>
+                
+                <details class="round">
+                  <summary>Round 1 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">Analyze the video and answer the multiple-choice question.<br>Use only evidence from the video.<br>Return exactly this format:<br>ANSWER: &lt;single letter&gt;<br>CONFIDENCE: &lt;0-100&gt;<br>RATIONALE: &lt;short paragraph&gt;<br><br>Question: What else is the person able to do with the food?<br>Options:<br>A. Take the food.<br>B. Hold the food.<br>C. Put down the food.<br>D. Lie on the food.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">ANSWER: B. Hold the food.<br>CONFIDENCE: 95<br>RATIONALE: The person is seen holding the food in their hand, indicating they are able to hold it. The other options are not supported by the visual evidence in the video.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 2 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man sits at a desk in the background, working on a laptop. The man in the pink shirt turns to face the man at the desk.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 3 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a pink shirt and brown pants sits on a red plastic chair in a room. Another man sits at a desk in the background, working on a laptop.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 4 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a pink shirt sits on a red plastic chair in a room. Another person is seated at a desk in the background, working on a laptop.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 5 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a pink shirt sits on a red plastic chair in a room with white walls. Another person is seated at a desk in the background, working on a laptop. The man in the pink shirt is facing the person at the desk.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 6 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man is seated at a desk in the background, working on a laptop. The man in the pink shirt is facing the man at the desk.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 7 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a pink shirt and brown pants sits on a red plastic chair in a room. Another man sits at a desk in the background, working on a laptop.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 8 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man sits at a desk in the background, working on a laptop. The man in the pink shirt turns and sits down on the red chair.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 9 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man sits at a desk in the background, working on a laptop.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 10 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man sits at a desk in the background, working on a laptop. The man in the pink shirt turns and sits down on the red chair, facing the man at the desk.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 11 (terminal)</summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a pink shirt sits on a red plastic chair in a room with white walls. Another man is seated at a desk in the background, working on a laptop. The man in the pink shirt turns and sits down on the red chair, facing the man at the desk.</div>
+                    </div>
+                  </div>
+                </details>
+                
+              </details>
+              <details>
+                <summary>Sample metrics JSON</summary>
+                <pre>{
+  &quot;initial_correct&quot;: 0.0,
+  &quot;final_correct&quot;: 1.0,
+  &quot;flip_rate&quot;: 1.0,
+  &quot;number_of_flips&quot;: 1.0,
+  &quot;turn_of_first_change&quot;: 1,
+  &quot;turn_of_first_incorrect&quot;: null
+}</pre>
+              </details>
+            </section>
+            
+            <section class="card">
+              <h3>#8: Feasibility_T2_1094</h3>
+              <div class="meta">
+                <span><strong>Target:</strong> D</span>
+                <span><strong>Initial acc:</strong> 1.0</span>
+                <span><strong>Final acc:</strong> 0.0</span>
+                <span><strong>Flip rate:</strong> 1.0</span>
+              </div>
+              
+            <div class="video-block">
+              <div><strong>Video:</strong> <code>/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1094.mp4</code></div>
+              <video controls preload="metadata" src="/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1094.mp4"></video>
+            </div>
+            
+              <details open>
+                <summary>Per-turn trace</summary>
+                <table>
+                  <thead><tr><th>Turn</th><th>Choice</th><th>Conf</th><th>Raw Text</th></tr></thead>
+                  <tbody>
+                    <tr><td>0</td><td>D</td><td>95</td><td>ANSWER: D. Open the door.<br>CONFIDENCE: 95<br>RATIONALE: The person is seen opening the door at the beginning of the video, and then closing it. This indicates that the person is able to open the door.</td></tr><tr><td>1</td><td>-</td><td>-</td><td>&lt;0.6 seconds&gt;</td></tr><tr><td>2</td><td>-</td><td>-</td><td>&lt;0.6 seconds&gt;</td></tr><tr><td>3</td><td>-</td><td>-</td><td>&lt;0.6 seconds&gt;</td></tr><tr><td>4</td><td>-</td><td>-</td><td>&lt;0.6 seconds&gt;&lt;0.8 seconds&gt;</td></tr><tr><td>5</td><td>-</td><td>-</td><td>&lt;0.6 seconds&gt;</td></tr><tr><td>6</td><td>-</td><td>-</td><td>&lt;0.6 seconds&gt;</td></tr><tr><td>7</td><td>-</td><td>-</td><td>&lt;0.6 seconds&gt;</td></tr><tr><td>8</td><td>-</td><td>-</td><td>&lt;0.6 seconds&gt;</td></tr><tr><td>9</td><td>-</td><td>-</td><td>&lt;0.6 seconds&gt;&lt;0.8 seconds&gt;</td></tr><tr><td>10</td><td>-</td><td>-</td><td>&lt;0.6 seconds&gt;&lt;0.6 seconds&gt;</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <details>
+                <summary>Agentic rounds (input/output)</summary>
+                
+                <details class="round">
+                  <summary>Round 1 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">Analyze the video and answer the multiple-choice question.<br>Use only evidence from the video.<br>Return exactly this format:<br>ANSWER: &lt;single letter&gt;<br>CONFIDENCE: &lt;0-100&gt;<br>RATIONALE: &lt;short paragraph&gt;<br><br>Question: What else is the person able to do with the door?<br>Options:<br>A. Throw the door.<br>B. Close the door.<br>C. Lie on the door.<br>D. Open the door.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">ANSWER: D. Open the door.<br>CONFIDENCE: 95<br>RATIONALE: The person is seen opening the door at the beginning of the video, and then closing it. This indicates that the person is able to open the door.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 2 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.6 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 3 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.6 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 4 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.6 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 5 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.6 seconds&gt;&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 6 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.6 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 7 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.6 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 8 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.6 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 9 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.6 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 10 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.6 seconds&gt;&lt;0.8 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 11 (terminal)</summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;0.6 seconds&gt;&lt;0.6 seconds&gt;</div>
+                    </div>
+                  </div>
+                </details>
+                
+              </details>
+              <details>
+                <summary>Sample metrics JSON</summary>
+                <pre>{
+  &quot;initial_correct&quot;: 1.0,
+  &quot;final_correct&quot;: 0.0,
+  &quot;flip_rate&quot;: 1.0,
+  &quot;number_of_flips&quot;: 0.0,
+  &quot;turn_of_first_change&quot;: 1,
+  &quot;turn_of_first_incorrect&quot;: 1
+}</pre>
+              </details>
+            </section>
+            
+            <section class="card">
+              <h3>#9: Feasibility_T2_1098</h3>
+              <div class="meta">
+                <span><strong>Target:</strong> D</span>
+                <span><strong>Initial acc:</strong> 1.0</span>
+                <span><strong>Final acc:</strong> 0.0</span>
+                <span><strong>Flip rate:</strong> 1.0</span>
+              </div>
+              
+            <div class="video-block">
+              <div><strong>Video:</strong> <code>/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1098.mp4</code></div>
+              <video controls preload="metadata" src="/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1098.mp4"></video>
+            </div>
+            
+              <details open>
+                <summary>Per-turn trace</summary>
+                <table>
+                  <thead><tr><th>Turn</th><th>Choice</th><th>Conf</th><th>Raw Text</th></tr></thead>
+                  <tbody>
+                    <tr><td>0</td><td>D</td><td>95</td><td>ANSWER: D. Throw the towel.<br>CONFIDENCE: 95<br>RATIONALE: The person is seen holding the towel and then throwing it in the air, which demonstrates the ability to throw the towel.</td></tr><tr><td>1</td><td>A</td><td>-</td><td>&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is standing in a room with a tiled floor and purple curtains. He is holding a glass in his right hand and appears to be drinking from it. There is a table with a bottle of orange soda and a glass on it. The man is standing near the table and seems to be enjoying his drink.</td></tr><tr><td>2</td><td>A</td><td>-</td><td>&lt;1.0 seconds&gt; A man in a red shirt and khaki shorts stands in a room with purple curtains and a tiled floor. He is holding a glass in his right hand and appears to be drinking from it. He then places the glass on a table and picks up a cloth, which he uses to wipe his face. The room has several chairs and a table with various items on it, including a bottle of orange soda. The man then walks towards the camera, still holding the cloth.</td></tr><tr><td>3</td><td>A</td><td>-</td><td>&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is standing in a dining area with a table and chairs. He is holding a glass in his right hand and appears to be drinking from it. The room has a tiled floor with a black and white pattern, and there are purple curtains covering the windows. The man is standing near a table with a bottle of soda and a glass on it. He takes a sip from the glass and then places it back on the table. The man then walks away from the table and exits the frame.</td></tr><tr><td>4</td><td>A</td><td>-</td><td>&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is standing in a room with a tiled floor and purple curtains. He is holding a glass in his right hand and appears to be drinking from it. He then places the glass on a table and picks up a cloth with his left hand. The table has a bottle of orange soda and a box of tissues on it. The man then walks towards the camera, still holding the cloth.</td></tr><tr><td>5</td><td>A</td><td>-</td><td>&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is standing in a room with a tiled floor and purple curtains. He is holding a glass in his right hand and appears to be drinking from it. He then places the glass on a table and picks up a cloth with his left hand. The room has several chairs and a table with various items on it, including a bottle of orange soda. The man then walks towards the camera, still holding the cloth.</td></tr><tr><td>6</td><td>A</td><td>-</td><td>&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is standing in a room with a tiled floor and purple curtains. He is holding a glass in his right hand and appears to be drinking from it. He then places the glass on a table and picks up a cloth with his left hand. The table has a bottle of orange soda and a box of tissues on it. The man then walks towards the camera, still holding the cloth.</td></tr><tr><td>7</td><td>A</td><td>-</td><td>&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is sitting at a table in a room with purple curtains and a tiled floor. He stands up and walks towards the camera, then turns and walks back towards the table. He picks up a glass of water and takes a sip. He then walks towards the door and exits the room.</td></tr><tr><td>8</td><td>A</td><td>-</td><td>&lt;1.0 seconds&gt; A man in a red shirt and khaki shorts is standing in a dining room with a table and chairs. He is holding a glass in his right hand and appears to be drinking from it. The room has a tiled floor with a black and white pattern, and there are purple curtains covering the windows. There is a bottle of orange soda on the table. The man takes a sip from the glass and then sets it down on the table. He then picks up a piece of paper from the table and begins to read it. He continues to stand in the room, reading the paper.</td></tr><tr><td>9</td><td>A</td><td>-</td><td>&lt;1.0 seconds&gt; A man in a red shirt and khaki shorts is sitting at a table in a room with purple curtains and a tiled floor. He stands up and walks towards the camera, then turns and walks away from the camera.</td></tr><tr><td>10</td><td>A</td><td>-</td><td>&lt;1.0 seconds&gt; A man in a red shirt and khaki shorts is standing in a room with a table and chairs. He is holding a glass in his right hand and appears to be drinking from it. The room has a tiled floor and purple curtains. There is a bottle of orange soda on the table. The man is standing near the table and appears to be enjoying his drink.</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <details>
+                <summary>Agentic rounds (input/output)</summary>
+                
+                <details class="round">
+                  <summary>Round 1 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">Analyze the video and answer the multiple-choice question.<br>Use only evidence from the video.<br>Return exactly this format:<br>ANSWER: &lt;single letter&gt;<br>CONFIDENCE: &lt;0-100&gt;<br>RATIONALE: &lt;short paragraph&gt;<br><br>Question: What else is the person able to do with the towel?<br>Options:<br>A. Put down the towel.<br>B. Take the towel.<br>C. Wash the towel.<br>D. Throw the towel.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">ANSWER: D. Throw the towel.<br>CONFIDENCE: 95<br>RATIONALE: The person is seen holding the towel and then throwing it in the air, which demonstrates the ability to throw the towel.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 2 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is standing in a room with a tiled floor and purple curtains. He is holding a glass in his right hand and appears to be drinking from it. There is a table with a bottle of orange soda and a glass on it. The man is standing near the table and seems to be enjoying his drink.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 3 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;1.0 seconds&gt; A man in a red shirt and khaki shorts stands in a room with purple curtains and a tiled floor. He is holding a glass in his right hand and appears to be drinking from it. He then places the glass on a table and picks up a cloth, which he uses to wipe his face. The room has several chairs and a table with various items on it, including a bottle of orange soda. The man then walks towards the camera, still holding the cloth.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 4 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is standing in a dining area with a table and chairs. He is holding a glass in his right hand and appears to be drinking from it. The room has a tiled floor with a black and white pattern, and there are purple curtains covering the windows. The man is standing near a table with a bottle of soda and a glass on it. He takes a sip from the glass and then places it back on the table. The man then walks away from the table and exits the frame.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 5 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is standing in a room with a tiled floor and purple curtains. He is holding a glass in his right hand and appears to be drinking from it. He then places the glass on a table and picks up a cloth with his left hand. The table has a bottle of orange soda and a box of tissues on it. The man then walks towards the camera, still holding the cloth.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 6 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is standing in a room with a tiled floor and purple curtains. He is holding a glass in his right hand and appears to be drinking from it. He then places the glass on a table and picks up a cloth with his left hand. The room has several chairs and a table with various items on it, including a bottle of orange soda. The man then walks towards the camera, still holding the cloth.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 7 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is standing in a room with a tiled floor and purple curtains. He is holding a glass in his right hand and appears to be drinking from it. He then places the glass on a table and picks up a cloth with his left hand. The table has a bottle of orange soda and a box of tissues on it. The man then walks towards the camera, still holding the cloth.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 8 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;1.0 seconds&gt; A man in a red shirt and beige shorts is sitting at a table in a room with purple curtains and a tiled floor. He stands up and walks towards the camera, then turns and walks back towards the table. He picks up a glass of water and takes a sip. He then walks towards the door and exits the room.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 9 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;1.0 seconds&gt; A man in a red shirt and khaki shorts is standing in a dining room with a table and chairs. He is holding a glass in his right hand and appears to be drinking from it. The room has a tiled floor with a black and white pattern, and there are purple curtains covering the windows. There is a bottle of orange soda on the table. The man takes a sip from the glass and then sets it down on the table. He then picks up a piece of paper from the table and begins to read it. He continues to stand in the room, reading the paper.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 10 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;1.0 seconds&gt; A man in a red shirt and khaki shorts is sitting at a table in a room with purple curtains and a tiled floor. He stands up and walks towards the camera, then turns and walks away from the camera.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 11 (terminal)</summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">&lt;1.0 seconds&gt; A man in a red shirt and khaki shorts is standing in a room with a table and chairs. He is holding a glass in his right hand and appears to be drinking from it. The room has a tiled floor and purple curtains. There is a bottle of orange soda on the table. The man is standing near the table and appears to be enjoying his drink.</div>
+                    </div>
+                  </div>
+                </details>
+                
+              </details>
+              <details>
+                <summary>Sample metrics JSON</summary>
+                <pre>{
+  &quot;initial_correct&quot;: 1.0,
+  &quot;final_correct&quot;: 0.0,
+  &quot;flip_rate&quot;: 1.0,
+  &quot;number_of_flips&quot;: 1.0,
+  &quot;turn_of_first_change&quot;: 1,
+  &quot;turn_of_first_incorrect&quot;: 1
+}</pre>
+              </details>
+            </section>
+            
+            <section class="card">
+              <h3>#10: Feasibility_T2_1120</h3>
+              <div class="meta">
+                <span><strong>Target:</strong> C</span>
+                <span><strong>Initial acc:</strong> 0.0</span>
+                <span><strong>Final acc:</strong> 0.0</span>
+                <span><strong>Flip rate:</strong> 1.0</span>
+              </div>
+              
+            <div class="video-block">
+              <div><strong>Video:</strong> <code>/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1120.mp4</code></div>
+              <video controls preload="metadata" src="/home/sh.mo/projects/justkeepprompting/star_data/star_clips/Feasibility/Feasibility_T2_1120.mp4"></video>
+            </div>
+            
+              <details open>
+                <summary>Per-turn trace</summary>
+                <table>
+                  <thead><tr><th>Turn</th><th>Choice</th><th>Conf</th><th>Raw Text</th></tr></thead>
+                  <tbody>
+                    <tr><td>0</td><td>B</td><td>85</td><td>ANSWER: B. Put down the dish.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen holding the dish and then placing it on the table, indicating the ability to put down the dish.</td></tr><tr><td>1</td><td>A</td><td>-</td><td>A man in a black jacket and grey pants walks into a dining room, picks up a white plate from a table covered with a white tablecloth, and then walks out of the frame. The dining room has a round table with chairs, a microwave on a cabinet, and a trash can.</td></tr><tr><td>2</td><td>A</td><td>-</td><td>A man in a black jacket and dark pants walks through a dining area, carrying a white plate. He moves from the right side of the frame towards the left, passing a round table with a light-colored tablecloth, plates, and a vase of pink flowers. The room has a light-colored wall, a window with vertical blinds, and a small cabinet with a microwave and other items. The man exits the frame on the left side.</td></tr><tr><td>3</td><td>A</td><td>-</td><td>A man in a black jacket and grey pants walks into a dining room, picks up a white plate from a round table covered with a white tablecloth, and then walks out of the frame. The room has a dining table with chairs, a microwave on a small cabinet, and a trash can.</td></tr><tr><td>4</td><td>A</td><td>-</td><td>A man in a black jacket and grey pants walks into a dining room, picks up a white plate from a table covered with a white tablecloth, and then walks out of the frame. The room has a dining table with chairs, a microwave on a cabinet, and a trash can.</td></tr><tr><td>5</td><td>A</td><td>-</td><td>A man in a black jacket and grey pants walks into a dining room, picks up a white plate from a round table covered with a white tablecloth, and then walks out of the frame. The room has a dining table with chairs, a microwave on a cabinet, and a trash can.</td></tr><tr><td>6</td><td>A</td><td>-</td><td>A man in a black jacket and dark pants walks into a dining area, picks up a white plate from a round table covered with a light-colored tablecloth, and then walks out of the frame. The table has a floral centerpiece and other dishes. The room has a microwave on a cabinet, a trash can, and a window with blinds.</td></tr><tr><td>7</td><td>A</td><td>-</td><td>A man in a black jacket walks into a dining room, picks up a white plate from a table covered with a white tablecloth, and then walks out of the frame. The room has a dining table with chairs, a microwave on a cabinet, and a trash can.</td></tr><tr><td>8</td><td>A</td><td>-</td><td>A man in a black jacket and grey pants walks into a dining room. He picks up a white plate from a round table covered with a light blue tablecloth. The table has a vase with pink flowers and other dishes. He then walks out of the frame to the right.</td></tr><tr><td>9</td><td>A</td><td>-</td><td>A man in a black jacket and dark pants walks into a dining area, picks up a white plate from a round table covered with a light blue tablecloth, and then walks out of the frame. The table has a vase with pink flowers and a few other items. There are wicker chairs around the table. In the background, there is a microwave on a small cabinet, a green trash can, and a closed sliding door.</td></tr><tr><td>10</td><td>A</td><td>-</td><td>A man in a black jacket and grey pants walks from the right side of the frame to the left, carrying a white plate. He then exits the frame on the left.</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <details>
+                <summary>Agentic rounds (input/output)</summary>
+                
+                <details class="round">
+                  <summary>Round 1 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">Analyze the video and answer the multiple-choice question.<br>Use only evidence from the video.<br>Return exactly this format:<br>ANSWER: &lt;single letter&gt;<br>CONFIDENCE: &lt;0-100&gt;<br>RATIONALE: &lt;short paragraph&gt;<br><br>Question: What else is the person able to do with the dish?<br>Options:<br>A. Hold the dish.<br>B. Put down the dish.<br>C. Take the dish.<br>D. Open the dish.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">ANSWER: B. Put down the dish.<br>CONFIDENCE: 85<br>RATIONALE: The person is seen holding the dish and then placing it on the table, indicating the ability to put down the dish.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 2 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a black jacket and grey pants walks into a dining room, picks up a white plate from a table covered with a white tablecloth, and then walks out of the frame. The dining room has a round table with chairs, a microwave on a cabinet, and a trash can.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 3 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a black jacket and dark pants walks through a dining area, carrying a white plate. He moves from the right side of the frame towards the left, passing a round table with a light-colored tablecloth, plates, and a vase of pink flowers. The room has a light-colored wall, a window with vertical blinds, and a small cabinet with a microwave and other items. The man exits the frame on the left side.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 4 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a black jacket and grey pants walks into a dining room, picks up a white plate from a round table covered with a white tablecloth, and then walks out of the frame. The room has a dining table with chairs, a microwave on a small cabinet, and a trash can.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 5 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a black jacket and grey pants walks into a dining room, picks up a white plate from a table covered with a white tablecloth, and then walks out of the frame. The room has a dining table with chairs, a microwave on a cabinet, and a trash can.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 6 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a black jacket and grey pants walks into a dining room, picks up a white plate from a round table covered with a white tablecloth, and then walks out of the frame. The room has a dining table with chairs, a microwave on a cabinet, and a trash can.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 7 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a black jacket and dark pants walks into a dining area, picks up a white plate from a round table covered with a light-colored tablecloth, and then walks out of the frame. The table has a floral centerpiece and other dishes. The room has a microwave on a cabinet, a trash can, and a window with blinds.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 8 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a black jacket walks into a dining room, picks up a white plate from a table covered with a white tablecloth, and then walks out of the frame. The room has a dining table with chairs, a microwave on a cabinet, and a trash can.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 9 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a black jacket and grey pants walks into a dining room. He picks up a white plate from a round table covered with a light blue tablecloth. The table has a vase with pink flowers and other dishes. He then walks out of the frame to the right.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 10 </summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a black jacket and dark pants walks into a dining area, picks up a white plate from a round table covered with a light blue tablecloth, and then walks out of the frame. The table has a vase with pink flowers and a few other items. There are wicker chairs around the table. In the background, there is a microwave on a small cabinet, a green trash can, and a closed sliding door.</div>
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="round">
+                  <summary>Round 11 (terminal)</summary>
+                  <div class="grid">
+                    <div>
+                      <h5>Input</h5>
+                      <div class="mono">No, that is not correct. Re-check the video and answer again in the same format, even if your answer stays the same.</div>
+                    </div>
+                    <div>
+                      <h5>Model Output</h5>
+                      <div class="mono">A man in a black jacket and grey pants walks from the right side of the frame to the left, carrying a white plate. He then exits the frame on the left.</div>
+                    </div>
+                  </div>
+                </details>
+                
+              </details>
+              <details>
+                <summary>Sample metrics JSON</summary>
+                <pre>{
+  &quot;initial_correct&quot;: 0.0,
+  &quot;final_correct&quot;: 0.0,
+  &quot;flip_rate&quot;: 1.0,
+  &quot;number_of_flips&quot;: 1.0,
+  &quot;turn_of_first_change&quot;: 1,
+  &quot;turn_of_first_incorrect&quot;: null
+}</pre>
+              </details>
+            </section>
+            
+  </div>
+</body>
+</html>
