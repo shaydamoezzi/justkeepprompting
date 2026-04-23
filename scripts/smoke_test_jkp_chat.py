@@ -14,7 +14,6 @@ if str(ROOT) not in sys.path:
 
 from jkp_infer.backends import (
     GeminiNativeChatBackend,
-    MockChatBackend,
     OpenAICompatibleChatBackend,
     TransformersImageChatBackend,
 )
@@ -84,13 +83,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Run a self-hosted JKP smoke test without vendor dependencies.")
     parser.add_argument(
         "--backend",
-        choices=["mock", "transformers", "openai_compatible", "gemini_native"],
-        default="mock",
-        help="Use mock backend, local transformers backend, or OpenAI-compatible API backend.",
+        choices=["transformers", "openai_compatible", "gemini_native"],
+        default="gemini_native",
+        help="Use local transformers backend, OpenAI-compatible API backend, or Gemini native backend.",
     )
     parser.add_argument(
         "--family",
-        choices=["qwen3_vl", "internvl3_5", "gemini", "gemini_openai"],
+        choices=["qwen3_vl", "internvl3_5", "gemini"],
         default="qwen3_vl",
         help="Model family for --backend transformers.",
     )
@@ -248,9 +247,6 @@ def main() -> int:
         help="Print full raw model text for each turn to stdout.",
     )
     args = parser.parse_args()
-    if args.family == "gemini_openai":
-        # Backward compatibility for older commands/configs.
-        args.family = "gemini"
 
     if args.fps is not None and args.fps <= 0:
         raise SystemExit("--fps must be > 0.")
@@ -295,10 +291,7 @@ def main() -> int:
         if not args.model_id:
             args.model_id = preset_model_id
 
-    if args.backend == "mock":
-        backend = MockChatBackend()
-        gpu_inventory: list[dict[str, object]] = []
-    elif args.backend == "transformers":
+    if args.backend == "transformers":
         import torch
 
         visible_devices = os.environ.get("CUDA_VISIBLE_DEVICES", "<all>")

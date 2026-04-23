@@ -1,0 +1,165 @@
+{
+  "source_split": "STAR_val",
+  "clips_root": "/home/sh.mo/projects/justkeepprompting/star_data/star_clips",
+  "num_entries": 1990,
+  "fields": {
+    "question_id": "STAR question identifier and local clip filename stem.",
+    "clip_path": "Path relative to clips_root.",
+    "category": "Top-level STAR category.",
+    "template_id": "Question template ID within the category.",
+    "question": "Rendered natural-language question.",
+    "choices": "Answer choices in display order.",
+    "answer_index": "Zero-based index of the correct choice in choices."
+  },
+  "templates": {
+    "Interaction_T1": {
+      "category": "Interaction",
+      "template_id": "T1",
+      "question_template": "Which object was [Verb]ed by the person?",
+      "answer_template": "The [Obj]."
+    },
+    "Interaction_T2": {
+      "category": "Interaction",
+      "template_id": "T2",
+      "question_template": "What did the person do with the [Obj]?",
+      "answer_template": "[Verb]ed."
+    },
+    "Interaction_T3": {
+      "category": "Interaction",
+      "template_id": "T3",
+      "question_template": "What did the person do while they were [Contact_Rel] the [Obj]?",
+      "answer_template": "[Verb]ed the [Obj]."
+    },
+    "Interaction_T4": {
+      "category": "Interaction",
+      "template_id": "T4",
+      "question_template": "What did the person do while they were [Contact_Rel1] the [Obj1] and [Contact_Rel2] the [Obj2]?",
+      "answer_template": "[Verb]ed the [Obj]."
+    },
+    "Sequence_T1": {
+      "category": "Sequence",
+      "template_id": "T1",
+      "question_template": "Which object did the person [Verb1] after they [Verb2]ed the [Obj2]?",
+      "answer_template": "The [Obj1]."
+    },
+    "Sequence_T2": {
+      "category": "Sequence",
+      "template_id": "T2",
+      "question_template": "Which object did the person [Verb1] before they [Verb2]ed the [Obj2]?",
+      "answer_template": "The [Obj1]."
+    },
+    "Sequence_T3": {
+      "category": "Sequence",
+      "template_id": "T3",
+      "question_template": "What happened after the person [Verb1]ed the [Obj1]?",
+      "answer_template": "[Verb2]ed the [Obj2]."
+    },
+    "Sequence_T4": {
+      "category": "Sequence",
+      "template_id": "T4",
+      "question_template": "What happened before the person [Verb1]ed the [Obj1]?",
+      "answer_template": "[Verb2]ed the [Obj2]."
+    },
+    "Sequence_T5": {
+      "category": "Sequence",
+      "template_id": "T5",
+      "question_template": "What did the person do to the [Obj2] after [Verb1]ing the [Obj1]?",
+      "answer_template": "[Verb2]ed."
+    },
+    "Sequence_T6": {
+      "category": "Sequence",
+      "template_id": "T6",
+      "question_template": "What did the person do to the [Obj2] before [Verb1]ing the [Obj1]?",
+      "answer_template": "[Verb2]ed."
+    },
+    "Prediction_T1": {
+      "category": "Prediction",
+      "template_id": "T1",
+      "question_template": "What will the person do next?",
+      "answer_template": "[Verb] the [Obj]."
+    },
+    "Prediction_T2": {
+      "category": "Prediction",
+      "template_id": "T2",
+      "question_template": "What will the person do next with the [Obj]?",
+      "answer_template": "[Verb]."
+    },
+    "Prediction_T3": {
+      "category": "Prediction",
+      "template_id": "T3",
+      "question_template": "Which object would the person [Verb] next? ",
+      "answer_template": "The [Obj]."
+    },
+    "Prediction_T4": {
+      "category": "Prediction",
+      "template_id": "T4",
+      "question_template": "Which object would the person [Verb2] next after they [Verb1] the [Obj1]?",
+      "answer_template": "The [Obj2]."
+    },
+    "Feasibility_T1": {
+      "category": "Feasibility",
+      "template_id": "T1",
+      "question_template": "Which other object is possible to be [Verb]ed by the person?",
+      "answer_template": "The [Obj]."
+    },
+    "Feasibility_T2": {
+      "category": "Feasibility",
+      "template_id": "T2",
+      "question_template": "What else is the person able to do with the [Obj]?",
+      "answer_template": "[Verb] the [Obj]."
+    },
+    "Feasibility_T3": {
+      "category": "Feasibility",
+      "template_id": "T3",
+      "question_template": "Which object is possible to be [Verb1]ed when the person is [Spatial_Rel] the [Obj2]?",
+      "answer_template": "The [Obj1]."
+    },
+    "Feasibility_T4": {
+      "category": "Feasibility",
+      "template_id": "T4",
+      "question_template": "What is the person able to do when they are [Spatial_Rel] the [Obj2]?",
+      "answer_template": "[Verb1] the [Obj1]."
+    },
+    "Feasibility_T5": {
+      "category": "Feasibility",
+      "template_id": "T5",
+      "question_template": "Which object is the person able to [Verb1] after [Verb2]ing the [Obj2]?",
+      "answer_template": "The [Obj1]."
+    },
+    "Feasibility_T6": {
+      "category": "Feasibility",
+      "template_id": "T6",
+      "question_template": "What is the person able to do after [Verb1]ing the [Obj1]?",
+      "answer_template": "[Verb2] the [Obj2]."
+    }
+  },
+  "counts_by_category_template": {
+    "Feasibility": {
+      "T2": 98,
+      "T3": 13,
+      "T4": 13,
+      "T5": 226,
+      "T6": 140
+    },
+    "Interaction": {
+      "T1": 125,
+      "T2": 125,
+      "T3": 125,
+      "T4": 125
+    },
+    "Prediction": {
+      "T1": 145,
+      "T2": 95,
+      "T3": 115,
+      "T4": 145
+    },
+    "Sequence": {
+      "T1": 84,
+      "T2": 84,
+      "T3": 83,
+      "T4": 83,
+      "T5": 83,
+      "T6": 83
+    }
+  }
+}

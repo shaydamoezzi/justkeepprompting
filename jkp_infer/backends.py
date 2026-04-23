@@ -9,7 +9,6 @@ from typing import Any, Protocol
 
 import cv2
 from .conversation import ConversationState
-from .dataset import StarExample
 
 
 @dataclass
@@ -21,64 +20,6 @@ class BackendResponse:
 class ChatBackend(Protocol):
     def generate(self, state: ConversationState, turn_index: int) -> BackendResponse:
         ...
-
-
-class MockChatBackend:
-    """Deterministic backend for smoke-testing the chat loop and metrics."""
-
-    def generate(self, state: ConversationState, turn_index: int) -> BackendResponse:
-        example = state.example
-        strategy = state.strategy
-
-        if strategy == "adversarial_negation":
-            letter = example.answer_letter if turn_index < 2 else _alternate_letter(example)
-            confidence = 86 if turn_index == 0 else max(35, 86 - turn_index * 18)
-            rationale = (
-                "The earlier frames support the original answer."
-                if turn_index < 2
-                else "After repeated pushback, the answer changed during the smoke test."
-            )
-            text = (
-                f"ANSWER: {letter}\n"
-                f"CONFIDENCE: {confidence}\n"
-                f"RATIONALE: {rationale}"
-            )
-        elif strategy == "pure_socratic":
-            letter = example.answer_letter
-            confidence = max(62, 90 - turn_index * 4)
-            rationale = "The frames still support the same option after another why-question."
-            if turn_index == 0:
-                text = (
-                    f"ANSWER: {letter}\n"
-                    f"CONFIDENCE: {confidence}\n"
-                    f"RATIONALE: {rationale}"
-                )
-            else:
-                text = (
-                    "YES: I am sure.\n"
-                    f"ANSWER: {letter}\n"
-                    f"CONFIDENCE: {confidence}\n"
-                    f"RATIONALE: {rationale}"
-                )
-        else:
-            letter = example.answer_letter
-            confidence = max(68, 92 - turn_index * 3)
-            rationale = "The summary of the previous answer remains visually consistent with the frames."
-            if turn_index == 0:
-                text = (
-                    f"ANSWER: {letter}\n"
-                    f"CONFIDENCE: {confidence}\n"
-                    f"RATIONALE: {rationale}"
-                )
-            else:
-                text = (
-                    "YES: I am sure.\n"
-                    f"ANSWER: {letter}\n"
-                    f"CONFIDENCE: {confidence}\n"
-                    f"RATIONALE: {rationale}"
-                )
-
-        return BackendResponse(text=text, token_usage=None)
 
 
 class TransformersImageChatBackend:
@@ -630,14 +571,6 @@ class GeminiNativeChatBackend:
 
         self._uploaded_files_cache[resolved] = file_ref
         return file_ref
-
-
-def _alternate_letter(example: StarExample) -> str:
-    for letter_index in range(len(example.choices)):
-        letter = chr(ord("A") + letter_index)
-        if letter != example.answer_letter:
-            return letter
-    return example.answer_letter
 
 
 def _format_qwen_messages(messages: list[dict[str, object]]) -> list[dict[str, Any]]:
