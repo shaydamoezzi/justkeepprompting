@@ -89,7 +89,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--family",
-        choices=["qwen3_vl", "internvl3_5", "gemini"],
+        choices=["qwen3_vl", "internvl3_5", "gemini", "openai"],
         default="qwen3_vl",
         help="Model family for --backend transformers.",
     )
@@ -158,6 +158,66 @@ def main() -> int:
             "Hard cap on total API calls in this run for --backend openai_compatible. "
             "Set <= your Tier 1 quota budget."
         ),
+    )
+    parser.add_argument(
+        "--openai-image-detail",
+        choices=["low", "auto", "high"],
+        default="low",
+        help="Image detail setting for OpenAI-compatible multimodal requests.",
+    )
+    parser.add_argument(
+        "--openai-image-max-side",
+        type=int,
+        default=512,
+        help="Max pixel size for the longest side of each image/frame sent to OpenAI-compatible APIs.",
+    )
+    parser.add_argument(
+        "--openai-image-jpeg-quality",
+        type=int,
+        default=60,
+        help="JPEG quality (20-95) for images/frames sent to OpenAI-compatible APIs.",
+    )
+    parser.add_argument(
+        "--openai-image-max-size-mb",
+        type=float,
+        default=20.0,
+        help="Per-image/frame payload cap in MB; frames are progressively downscaled until under this cap.",
+    )
+    parser.add_argument(
+        "--openai-image-resize-factor",
+        type=float,
+        default=0.75,
+        help="Progressive resize multiplier applied when image/frame exceeds --openai-image-max-size-mb.",
+    )
+    parser.add_argument(
+        "--openai-image-min-side",
+        type=int,
+        default=100,
+        help="Minimum image/frame side length during progressive resizing.",
+    )
+    parser.add_argument(
+        "--openai-max-tokens-per-minute",
+        type=int,
+        default=30000,
+        help="OpenAI TPM budget used for adaptive pacing/backoff in openai_compatible backend.",
+    )
+    parser.add_argument(
+        "--openai-max-requests-per-minute",
+        type=int,
+        default=500,
+        help="OpenAI RPM budget used for adaptive pacing/backoff in openai_compatible backend.",
+    )
+    parser.add_argument(
+        "--openai-max-retries",
+        type=int,
+        default=5,
+        help="Max retries for OpenAI request failures (including token-limit errors).",
+    )
+    parser.add_argument(
+        "--openai-retry-backoff-seconds",
+        type=float,
+        default=8.0,
+        help="Base exponential backoff (seconds) for OpenAI retries.",
     )
     parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--max-new-tokens", type=int, default=192)
@@ -245,6 +305,11 @@ def main() -> int:
         "--print-raw-turns",
         action="store_true",
         help="Print full raw model text for each turn to stdout.",
+    )
+    parser.add_argument(
+        "--debug-openai-io",
+        action="store_true",
+        help="Print OpenAI request/response debug info (message/frame counts, token usage, text preview).",
     )
     args = parser.parse_args()
 
@@ -353,15 +418,27 @@ def main() -> int:
             )
         default_model_ids = {
             "gemini": "gemini-3.1-pro-preview",
+            "openai": "gpt-4o",
         }
         backend = OpenAICompatibleChatBackend(
             {
-                "model_id": args.model_id or default_model_ids.get(args.family, "gemini-3.1-pro-preview"),
+                "model_id": args.model_id or default_model_ids.get(args.family, "gpt-4o"),
                 "api_base_url": args.api_base_url,
                 "api_key_env_var": args.api_key_env_var,
                 "temperature": args.temperature,
                 "max_new_tokens": args.max_new_tokens,
                 "min_seconds_between_requests": args.min_seconds_between_requests,
+                "image_detail": args.openai_image_detail,
+                "image_max_side": args.openai_image_max_side,
+                "image_jpeg_quality": args.openai_image_jpeg_quality,
+                "image_max_size_mb": args.openai_image_max_size_mb,
+                "image_resize_factor": args.openai_image_resize_factor,
+                "image_min_side": args.openai_image_min_side,
+                "max_tokens_per_minute": args.openai_max_tokens_per_minute,
+                "max_requests_per_minute": args.openai_max_requests_per_minute,
+                "max_retries": args.openai_max_retries,
+                "retry_backoff_seconds": args.openai_retry_backoff_seconds,
+                "debug_io": args.debug_openai_io,
             }
         )
         gpu_inventory = []
@@ -439,6 +516,8 @@ def main() -> int:
     )
 
     for example in examples:
+        print(f"\nStarting example: {example.question_id}")
+        print(f"Video: {example.video_path}")
         run = run_example_chat(
             example=example,
             strategy=args.strategy,

@@ -75,6 +75,34 @@ All strategies require model output in this schema:
 - Vision-language model: `Qwen/Qwen3-VL-30B-A3B-Instruct`
 - Backend family: `qwen3_vl` (transformers path)
 
+### Current OpenAI GPT-4o setup
+
+- Vision-language model: `gpt-4o`
+- Backend: `openai_compatible` (OpenAI chat completions API path)
+- CLI family: `openai`
+- Base URL: `https://api.openai.com/v1`
+- API key env var: `OPENAI_API_KEY`
+- Current eval settings:
+  - `--input-mode video`
+  - `--fps 5`
+  - `--max-frames 30` (used as a safer cap after TPM failures at higher frame counts)
+  - `--max-turns 10`
+  - `--temperature 0.2`
+  - `--min-seconds-between-requests 8`
+  - image-cost mitigation flags:
+    - `--openai-image-detail low`
+    - `--openai-image-max-side 512`
+    - `--openai-image-jpeg-quality 50`
+    - `--openai-image-max-size-mb 2`
+    - `--openai-image-resize-factor 0.75`
+    - `--openai-image-min-side 100`
+  - adaptive control/debug flags:
+    - `--openai-max-tokens-per-minute 30000`
+    - `--openai-max-requests-per-minute 500`
+    - `--openai-max-retries 6`
+    - `--openai-retry-backoff-seconds 8`
+    - `--debug-openai-io`
+
 ### Context-socratic summarizer
 
 - Text summarizer model: `Qwen/Qwen3-8B`
@@ -134,6 +162,50 @@ python scripts/smoke_test_jkp_chat.py \
   --output-dir outputs/self_hosted_fullrun_gemini25pro/pure_socratic_80
 ```
 
+### OpenAI GPT-4o adversarial negation run (80 examples, resume-safe)
+
+Use the question-id set derived from completed Gemini adversarial-negation runs:
+
+- `outputs/self_hosted_fullrun_openai_gpt4o/adversarial_negation_80/question_ids_from_gemini_runs.txt`
+
+Run command:
+
+```bash
+python scripts/smoke_test_jkp_chat.py \
+  --backend openai_compatible \
+  --family openai \
+  --model-id gpt-4o \
+  --api-base-url https://api.openai.com/v1 \
+  --api-key-env-var OPENAI_API_KEY \
+  --strategy adversarial_negation \
+  --max-turns 10 \
+  --temperature 0.2 \
+  --input-mode video \
+  --fps 5 \
+  --max-frames 30 \
+  --min-seconds-between-requests 8 \
+  --max-api-requests 1000 \
+  --openai-image-detail low \
+  --openai-image-max-side 512 \
+  --openai-image-jpeg-quality 50 \
+  --openai-image-max-size-mb 2 \
+  --openai-image-resize-factor 0.75 \
+  --openai-image-min-side 100 \
+  --openai-max-tokens-per-minute 30000 \
+  --openai-max-requests-per-minute 500 \
+  --openai-max-retries 6 \
+  --openai-retry-backoff-seconds 8 \
+  --question-ids-file outputs/self_hosted_fullrun_openai_gpt4o/adversarial_negation_80/question_ids_remaining.txt \
+  --output-dir outputs/self_hosted_fullrun_openai_gpt4o/adversarial_negation_80 \
+  --debug-openai-io
+```
+
+Resume flow:
+
+1. Use `question_ids_remaining.txt` in the same output folder.
+2. Re-run the same command with the same output dir.
+3. The runner writes one artifact per example under `runs/`, so already-completed files are easy to diff against remaining IDs.
+
 
 ## Outputs
 
@@ -141,6 +213,7 @@ Main run artifacts are written under:
 
 - `outputs/self_hosted_fullrun_gemini25pro/<strategy>_80/runs/*.json`
 - `outputs/Qwen3-VL-30B-A3B-Instruct_FULLRUN/<strategy>_80/runs/*.json` 
+- `outputs/self_hosted_fullrun_openai_gpt4o/<strategy>_80/runs/*.json`
 
 
 Each artifact contains:
@@ -150,5 +223,14 @@ Each artifact contains:
 - flip metrics
 - token usage
 - run config and environment metadata
+
+Debug logging behavior:
+
+- `--debug-openai-io` prints per-turn request diagnostics:
+  - message counts and role breakdown
+  - text part count, image/frame part count
+  - approximate payload character size
+  - response token usage
+  - explicit error text on failed requests
 
 

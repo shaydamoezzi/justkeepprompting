@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+from collections import deque
 from dataclasses import dataclass
 import base64
 import os
 from pathlib import Path
+import re
 import time
 from typing import Any, Protocol
 
@@ -196,6 +198,17 @@ class OpenAICompatibleChatBackend:
         self.model_id = str(config["model_id"])
         self.temperature = float(config.get("temperature", 0.2))
         self.max_new_tokens = int(config.get("max_new_tokens", 192))
+        self.image_detail = str(config.get("image_detail", "low"))
+        self.image_max_side = int(config.get("image_max_side", 512))
+        self.image_jpeg_quality = int(config.get("image_jpeg_quality", 60))
+        self.image_max_size_mb = float(config.get("image_max_size_mb", 20.0))
+        self.image_resize_factor = float(config.get("image_resize_factor", 0.75))
+        self.image_min_side = int(config.get("image_min_side", 100))
+        self.debug_io = bool(config.get("debug_io", False))
+        self.max_tokens_per_minute = int(config.get("max_tokens_per_minute", 30000))
+        self.max_requests_per_minute = int(config.get("max_requests_per_minute", 500))
+        self.max_retries = int(config.get("max_retries", 5))
+        self.retry_backoff_seconds = float(config.get("retry_backoff_seconds", 8.0))
         self.api_base_url = config.get("api_base_url")
         self.api_key = (
             config.get("api_key")
@@ -210,6 +223,8 @@ class OpenAICompatibleChatBackend:
         self.timeout_seconds = float(config.get("timeout_seconds", 120.0))
         self.min_seconds_between_requests = float(config.get("min_seconds_between_requests", 0.0))
         self._last_request_at = 0.0
+        self._request_timestamps: deque[float] = deque()
+        self._recent_total_tokens: deque[tuple[float, int]] = deque()
         self._client = OpenAI(
             api_key=self.api_key,
             base_url=self.api_base_url,
@@ -223,14 +238,50 @@ class OpenAICompatibleChatBackend:
             if remaining > 0:
                 time.sleep(remaining)
 
-        messages = _format_openai_compatible_messages(state.messages)
-        response = self._client.chat.completions.create(
-            model=self.model_id,
-            messages=messages,
-            temperature=self.temperature,
-            max_tokens=self.max_new_tokens,
+        messages = _format_openai_compatible_messages(
+            state.messages,
+            image_detail=self.image_detail,
+            image_max_side=self.image_max_side,
+            image_jpeg_quality=self.image_jpeg_quality,
+            image_max_size_mb=self.image_max_size_mb,
+            image_resize_factor=self.image_resize_factor,
+            image_min_side=self.image_min_side,
         )
+        response = None
+        for attempt in range(self.max_retries):
+            expected_tokens = self._expected_tokens_for_next_request(messages)
+            self._wait_for_rate_budget(expected_tokens=expected_tokens)
+            if self.debug_io:
+                self._debug_request(
+                    turn_index=turn_index,
+                    messages=messages,
+                    expected_tokens=expected_tokens,
+                    attempt=attempt + 1,
+                )
+            try:
+                response = self._client.chat.completions.create(
+                    model=self.model_id,
+                    messages=messages,
+                    temperature=self.temperature,
+                    max_tokens=self.max_new_tokens,
+                )
+                break
+            except Exception as exc:
+                err_text = str(exc)
+                reduced = self._reduce_images_on_tpm_error(messages, err_text)
+                if self.debug_io:
+                    print(
+                        f"[OpenAI debug:error] turn={turn_index} attempt={attempt + 1} reduced_images={reduced} error={err_text}",
+                        flush=True,
+                    )
+                if attempt == self.max_retries - 1:
+                    raise
+                sleep_s = self.retry_backoff_seconds * (2**attempt)
+                time.sleep(min(sleep_s, 60.0))
+        if response is None:  # pragma: no cover
+            raise RuntimeError("OpenAI request failed without response.")
         self._last_request_at = time.monotonic()
+        self._record_request_timestamp()
 
         text = response.choices[0].message.content or ""
         usage = getattr(response, "usage", None)
@@ -241,7 +292,157 @@ class OpenAICompatibleChatBackend:
                 "completion_tokens": int(getattr(usage, "completion_tokens", 0) or 0),
                 "total_tokens": int(getattr(usage, "total_tokens", 0) or 0),
             }
+            self._record_total_tokens(token_usage["total_tokens"])
+        if self.debug_io:
+            self._debug_response(turn_index=turn_index, token_usage=token_usage, text=text)
         return BackendResponse(text=text, token_usage=token_usage)
+
+    def _debug_request(
+        self,
+        *,
+        turn_index: int,
+        messages: list[dict[str, Any]],
+        expected_tokens: int,
+        attempt: int,
+    ) -> None:
+        image_parts = 0
+        text_parts = 0
+        approx_chars = 0
+        role_counts: dict[str, int] = {}
+        for msg in messages:
+            role = str(msg.get("role", "unknown"))
+            role_counts[role] = role_counts.get(role, 0) + 1
+            content = msg.get("content", "")
+            if isinstance(content, str):
+                approx_chars += len(content)
+                continue
+            if not isinstance(content, list):
+                continue
+            for block in content:
+                if not isinstance(block, dict):
+                    continue
+                block_type = block.get("type")
+                if block_type == "text":
+                    text_parts += 1
+                    approx_chars += len(str(block.get("text", "")))
+                elif block_type == "image_url":
+                    image_parts += 1
+                    image_url = block.get("image_url", {})
+                    if isinstance(image_url, dict):
+                        approx_chars += len(str(image_url.get("url", "")))
+        print(
+            (
+                f"[OpenAI debug:req] turn={turn_index} msgs={len(messages)} roles={role_counts} "
+                f"text_parts={text_parts} image_parts={image_parts} approx_chars={approx_chars} "
+                f"detail={self.image_detail} max_side={self.image_max_side} jpeg_quality={self.image_jpeg_quality} "
+                f"expected_tokens={expected_tokens} attempt={attempt}"
+            ),
+            flush=True,
+        )
+
+    def _debug_response(self, *, turn_index: int, token_usage: dict[str, int] | None, text: str) -> None:
+        print(
+            f"[OpenAI debug:resp] turn={turn_index} token_usage={token_usage} text_preview={repr(text[:220])}",
+            flush=True,
+        )
+
+    def _expected_tokens_for_next_request(self, messages: list[dict[str, Any]]) -> int:
+        # Use recent real usage when available, with a cushion.
+        self._prune_windows(time.monotonic())
+        if self._recent_total_tokens:
+            avg_recent = sum(tokens for _, tokens in self._recent_total_tokens) / len(self._recent_total_tokens)
+            return int(max(1000, avg_recent * 1.15))
+        # Cold-start heuristic: low-detail images are usually lower than high-detail tiles.
+        image_parts = 0
+        text_chars = 0
+        for msg in messages:
+            content = msg.get("content", "")
+            if isinstance(content, str):
+                text_chars += len(content)
+                continue
+            if not isinstance(content, list):
+                continue
+            for block in content:
+                if not isinstance(block, dict):
+                    continue
+                if block.get("type") == "image_url":
+                    image_parts += 1
+                elif block.get("type") == "text":
+                    text_chars += len(str(block.get("text", "")))
+        return int(max(1000, image_parts * 90 + text_chars / 4 + self.max_new_tokens))
+
+    def _wait_for_rate_budget(self, *, expected_tokens: int) -> None:
+        while True:
+            now = time.monotonic()
+            self._prune_windows(now)
+            wait_s = 0.0
+            if self.max_requests_per_minute > 0 and len(self._request_timestamps) >= self.max_requests_per_minute:
+                wait_s = max(wait_s, (self._request_timestamps[0] + 60.0) - now)
+            if self.max_tokens_per_minute > 0:
+                used = sum(tokens for _, tokens in self._recent_total_tokens)
+                if used + expected_tokens > self.max_tokens_per_minute and self._recent_total_tokens:
+                    wait_s = max(wait_s, (self._recent_total_tokens[0][0] + 60.0) - now)
+            if wait_s > 0:
+                time.sleep(min(wait_s, 5.0))
+                continue
+            break
+
+    def _record_request_timestamp(self) -> None:
+        now = time.monotonic()
+        self._prune_windows(now)
+        self._request_timestamps.append(now)
+
+    def _record_total_tokens(self, total_tokens: int) -> None:
+        now = time.monotonic()
+        self._prune_windows(now)
+        self._recent_total_tokens.append((now, max(1, int(total_tokens))))
+
+    def _prune_windows(self, now: float) -> None:
+        cutoff = now - 60.0
+        while self._request_timestamps and self._request_timestamps[0] < cutoff:
+            self._request_timestamps.popleft()
+        while self._recent_total_tokens and self._recent_total_tokens[0][0] < cutoff:
+            self._recent_total_tokens.popleft()
+
+    def _reduce_images_on_tpm_error(self, messages: list[dict[str, Any]], error_text: str) -> bool:
+        if "tokens per min" not in error_text.lower():
+            return False
+        match = re.search(r"Limit\\s+(\\d+),\\s+Requested\\s+(\\d+)", error_text)
+        if not match:
+            return False
+        limit = int(match.group(1))
+        requested = int(match.group(2))
+        if requested <= limit:
+            return False
+        keep_ratio = max(0.1, min(0.95, (limit / float(requested)) * 0.95))
+        reduced_any = False
+        for msg in messages:
+            content = msg.get("content")
+            if not isinstance(content, list):
+                continue
+            img_idx = [i for i, blk in enumerate(content) if isinstance(blk, dict) and blk.get("type") == "image_url"]
+            n = len(img_idx)
+            if n <= 1:
+                continue
+            keep = max(1, int(n * keep_ratio))
+            if keep >= n:
+                continue
+            keep_ord = {
+                int(round(i * (n - 1) / max(1, keep - 1))) if keep > 1 else 0
+                for i in range(keep)
+            }
+            new_content: list[Any] = []
+            seen = 0
+            for i, blk in enumerate(content):
+                if i in img_idx:
+                    if seen in keep_ord:
+                        new_content.append(blk)
+                    seen += 1
+                else:
+                    new_content.append(blk)
+            msg["content"] = new_content
+            reduced_any = True
+        return reduced_any
 
 
 class GeminiNativeChatBackend:
@@ -772,18 +973,43 @@ def _qwen_state_cache_key(state: ConversationState) -> str:
     return f"{state.example.question_id}:{state.strategy}"
 
 
-def _image_path_to_data_url(image_path: str) -> str:
+def _resize_bgr_frame(frame: Any, max_side: int | None) -> Any:
+    if max_side is None or max_side <= 0:
+        return frame
+    height, width = frame.shape[:2]
+    longest = max(height, width)
+    if longest <= max_side:
+        return frame
+    scale = float(max_side) / float(longest)
+    new_w = max(1, int(round(width * scale)))
+    new_h = max(1, int(round(height * scale)))
+    return cv2.resize(frame, (new_w, new_h), interpolation=cv2.INTER_AREA)
+
+
+def _image_path_to_data_url(
+    image_path: str,
+    *,
+    max_side: int | None = 512,
+    jpeg_quality: int = 60,
+    max_size_mb: float = 20.0,
+    resize_factor: float = 0.75,
+    min_side: int = 100,
+) -> str:
     path = Path(image_path).expanduser().resolve()
-    ext = path.suffix.lower()
-    mime = "image/jpeg"
-    if ext == ".png":
-        mime = "image/png"
-    elif ext == ".webp":
-        mime = "image/webp"
-    elif ext == ".gif":
-        mime = "image/gif"
-    data = base64.b64encode(path.read_bytes()).decode("ascii")
-    return f"data:{mime};base64,{data}"
+    frame = cv2.imread(str(path), cv2.IMREAD_COLOR)
+    if frame is None:
+        # Fallback to raw-bytes path behavior if cv2 decode fails.
+        data = base64.b64encode(path.read_bytes()).decode("ascii")
+        return f"data:image/jpeg;base64,{data}"
+    frame = _resize_bgr_frame(frame, max_side)
+    return _bgr_frame_to_jpeg_data_url(
+        frame,
+        max_side=None,
+        jpeg_quality=jpeg_quality,
+        max_size_mb=max_size_mb,
+        resize_factor=resize_factor,
+        min_side=min_side,
+    )
 
 
 def _guess_image_mime_type(image_path: str) -> str:
@@ -812,11 +1038,37 @@ def _looks_like_complete_structured_answer(text: str) -> bool:
     return True
 
 
-def _bgr_frame_to_jpeg_data_url(frame: Any) -> str:
-    ok, encoded = cv2.imencode(".jpg", frame)
-    if not ok:
-        raise RuntimeError("Failed to encode video frame as JPEG.")
-    data = base64.b64encode(encoded.tobytes()).decode("ascii")
+def _bgr_frame_to_jpeg_data_url(
+    frame: Any,
+    *,
+    max_side: int | None = 512,
+    jpeg_quality: int = 60,
+    max_size_mb: float = 20.0,
+    resize_factor: float = 0.75,
+    min_side: int = 100,
+) -> str:
+    frame = _resize_bgr_frame(frame, max_side)
+    quality = int(max(20, min(95, jpeg_quality)))
+    max_bytes = int(max(1.0, max_size_mb) * 1024 * 1024)
+    scale_factor = float(max(0.1, min(0.99, resize_factor)))
+    min_side_px = max(16, int(min_side))
+    current = frame
+    for _ in range(8):
+        ok, encoded = cv2.imencode(".jpg", current, [int(cv2.IMWRITE_JPEG_QUALITY), quality])
+        if not ok:
+            raise RuntimeError("Failed to encode video frame as JPEG.")
+        payload = encoded.tobytes()
+        if len(payload) <= max_bytes:
+            data = base64.b64encode(payload).decode("ascii")
+            return f"data:image/jpeg;base64,{data}"
+        h, w = current.shape[:2]
+        if min(h, w) <= min_side_px:
+            data = base64.b64encode(payload).decode("ascii")
+            return f"data:image/jpeg;base64,{data}"
+        new_w = max(min_side_px, int(round(w * scale_factor)))
+        new_h = max(min_side_px, int(round(h * scale_factor)))
+        current = cv2.resize(current, (new_w, new_h), interpolation=cv2.INTER_AREA)
+    data = base64.b64encode(payload).decode("ascii")
     return f"data:image/jpeg;base64,{data}"
 
 
@@ -826,6 +1078,11 @@ def _video_to_frame_data_urls(
     fps: float | None,
     max_frames: int | None,
     nframes: int | None,
+    image_max_side: int | None = 512,
+    image_jpeg_quality: int = 60,
+    image_max_size_mb: float = 20.0,
+    image_resize_factor: float = 0.75,
+    image_min_side: int = 100,
 ) -> list[str]:
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
@@ -859,12 +1116,30 @@ def _video_to_frame_data_urls(
         ok, frame = cap.read()
         if not ok:
             continue
-        data_urls.append(_bgr_frame_to_jpeg_data_url(frame))
+        data_urls.append(
+            _bgr_frame_to_jpeg_data_url(
+                frame,
+                max_side=image_max_side,
+                jpeg_quality=image_jpeg_quality,
+                max_size_mb=image_max_size_mb,
+                resize_factor=image_resize_factor,
+                min_side=image_min_side,
+            )
+        )
     cap.release()
     return data_urls
 
 
-def _format_openai_compatible_messages(messages: list[dict[str, object]]) -> list[dict[str, Any]]:
+def _format_openai_compatible_messages(
+    messages: list[dict[str, object]],
+    *,
+    image_detail: str = "low",
+    image_max_side: int = 512,
+    image_jpeg_quality: int = 60,
+    image_max_size_mb: float = 20.0,
+    image_resize_factor: float = 0.75,
+    image_min_side: int = 100,
+) -> list[dict[str, Any]]:
     formatted: list[dict[str, Any]] = []
     for message in messages:
         role = str(message.get("role", "user"))
@@ -886,7 +1161,17 @@ def _format_openai_compatible_messages(messages: list[dict[str, object]]) -> lis
                     converted_content.append(
                         {
                             "type": "image_url",
-                            "image_url": {"url": _image_path_to_data_url(image_path)},
+                            "image_url": {
+                                "url": _image_path_to_data_url(
+                                    image_path,
+                                    max_side=image_max_side,
+                                    jpeg_quality=image_jpeg_quality,
+                                    max_size_mb=image_max_size_mb,
+                                    resize_factor=image_resize_factor,
+                                    min_side=image_min_side,
+                                ),
+                                "detail": image_detail,
+                            },
                         }
                     )
             elif block_type == "video":
@@ -901,9 +1186,14 @@ def _format_openai_compatible_messages(messages: list[dict[str, object]]) -> lis
                     fps=float(fps) if fps is not None else None,
                     max_frames=int(max_frames) if max_frames is not None else None,
                     nframes=int(nframes) if nframes is not None else None,
+                    image_max_side=image_max_side,
+                    image_jpeg_quality=image_jpeg_quality,
+                    image_max_size_mb=image_max_size_mb,
+                    image_resize_factor=image_resize_factor,
+                    image_min_side=image_min_side,
                 )
                 converted_content.extend(
-                    {"type": "image_url", "image_url": {"url": data_url}}
+                    {"type": "image_url", "image_url": {"url": data_url, "detail": image_detail}}
                     for data_url in data_urls
                 )
         formatted.append({"role": role, "content": converted_content})
