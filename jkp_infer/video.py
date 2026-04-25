@@ -91,6 +91,14 @@ def sample_video_frames(
         else:
             indices = sorted({round(i * (frame_count - 1) / (num_frames - 1)) for i in range(num_frames)})
 
+    expected_paths = [
+        frame_dir / f"{video_path.stem}_frame_{position:02d}.jpg"
+        for position in range(len(indices))
+    ]
+    if output_dir is not None and all(path.exists() for path in expected_paths):
+        capture.release()
+        return expected_paths
+
     frame_paths: list[Path] = []
     for position, frame_index in enumerate(indices):
         capture.set(cv2.CAP_PROP_POS_FRAMES, frame_index)

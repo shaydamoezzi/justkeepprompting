@@ -159,8 +159,23 @@ Main run artifacts are written under:
 - `outputs/self_hosted_fullrun_openai_gpt4o/<strategy>_80/runs/*.json`
 
 
-Analysis can be found here: 
--  `/home/sh.mo/projects/justkeepprompting/outputs/RUNS_FULL_REPORT.md`
+Analysis can be found here:
+
+- `outputs/RUNS_FULL_REPORT.md` (aggregate metrics, flip transitions, notable cases, GPT-4o template deviations)
+
+### Confidence dynamics (deeper than initial vs final)
+
+Turn-level confidence is best read as a **trajectory** (and compared to correctness and flip events), not only as averages of the first and last turn.
+
+- **Plots** (PNGs): `outputs/analysis/confidence_dynamics/`
+- **Regenerate** (requires `numpy` and `matplotlib`; install with `pip install -r requirements.analysis.txt` or your env’s equivalent):
+
+```bash
+cd /path/to/justkeepprompting
+python3 scripts/analyze_confidence_dynamics.py
+```
+
+That script writes trajectory, reliability, flip-delta, volatility, and flip-aligned figures plus `outputs/analysis/confidence_dynamics/SUMMARY.md`.
 
 Each artifact contains:
 
