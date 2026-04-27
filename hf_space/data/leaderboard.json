@@ -1,0 +1,112 @@
+[
+  {
+    "model_label": "Qwen3-VL-30B",
+    "strategy": "pure_socratic",
+    "n_runs": 80,
+    "initial_acc": 77.5,
+    "final_acc": 77.5,
+    "flip_rate": 1.2,
+    "avg_flips": 0.01,
+    "conf_delta": null,
+    "gtt_score": 76.53
+  },
+  {
+    "model_label": "Qwen3-VL-30B",
+    "strategy": "context_socratic",
+    "n_runs": 80,
+    "initial_acc": 75.0,
+    "final_acc": 75.0,
+    "flip_rate": 0.0,
+    "avg_flips": 0.0,
+    "conf_delta": 3.73,
+    "gtt_score": 75.0
+  },
+  {
+    "model_label": "Gemini 2.5 Pro",
+    "strategy": "context_socratic",
+    "n_runs": 80,
+    "initial_acc": 68.8,
+    "final_acc": 68.8,
+    "flip_rate": 1.2,
+    "avg_flips": 0.03,
+    "conf_delta": 1.16,
+    "gtt_score": 67.89
+  },
+  {
+    "model_label": "Gemini 2.5 Pro",
+    "strategy": "pure_socratic",
+    "n_runs": 80,
+    "initial_acc": 68.8,
+    "final_acc": 70.0,
+    "flip_rate": 6.2,
+    "avg_flips": 0.19,
+    "conf_delta": 2.31,
+    "gtt_score": 65.62
+  },
+  {
+    "model_label": "GPT-4o",
+    "strategy": "adversarial_negation",
+    "n_runs": 80,
+    "initial_acc": 61.2,
+    "final_acc": 60.0,
+    "flip_rate": 21.2,
+    "avg_flips": 1.21,
+    "conf_delta": -1.15,
+    "gtt_score": 47.25
+  },
+  {
+    "model_label": "Qwen3-VL-30B",
+    "strategy": "adversarial_negation",
+    "n_runs": 80,
+    "initial_acc": 75.0,
+    "final_acc": 72.5,
+    "flip_rate": 38.8,
+    "avg_flips": 3.02,
+    "conf_delta": 3.71,
+    "gtt_score": 44.41
+  },
+  {
+    "model_label": "Gemini 2.5 Pro",
+    "strategy": "adversarial_negation",
+    "n_runs": 80,
+    "initial_acc": 67.5,
+    "final_acc": 65.0,
+    "flip_rate": 35.0,
+    "avg_flips": 2.35,
+    "conf_delta": 2.42,
+    "gtt_score": 42.25
+  },
+  {
+    "model_label": "InternVL3.5-30B",
+    "strategy": "pure_socratic",
+    "n_runs": 13,
+    "initial_acc": 38.5,
+    "final_acc": 38.5,
+    "flip_rate": 0.0,
+    "avg_flips": 0.0,
+    "conf_delta": -6.85,
+    "gtt_score": 38.46
+  },
+  {
+    "model_label": "GPT-4o",
+    "strategy": "context_socratic",
+    "n_runs": 80,
+    "initial_acc": 65.0,
+    "final_acc": 62.5,
+    "flip_rate": 58.8,
+    "avg_flips": 1.3,
+    "conf_delta": -8.5,
+    "gtt_score": 25.78
+  },
+  {
+    "model_label": "GPT-4o",
+    "strategy": "pure_socratic",
+    "n_runs": 80,
+    "initial_acc": 60.0,
+    "final_acc": 58.8,
+    "flip_rate": 71.2,
+    "avg_flips": 2.36,
+    "conf_delta": -13.38,
+    "gtt_score": 16.89
+  }
+]
